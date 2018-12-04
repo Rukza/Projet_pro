@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, user-scalable=no" >
 
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        {% block stylesheets %}
-   
-        {% endblock %}
-    </head>
-    <body>
-     {% include 'partial/header.html.twig'%}
-        {% block body %}
-         
-        {% endblock %}
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
 
-        {% block javascripts %}
-        
-        {% endblock %}
-    </body>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+    {% include 'partial/header.html.twig'%}
+
+    {% for label, messages in app.flashes %}
+        <div class="container mt-5">
+            <div class="alert alert-{{ label }}">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    {% block javascripts %}{% endblock %}
+</body>
+
 </html>
