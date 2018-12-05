@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="Adresse mail incompatible vueillez en rentrer une autre"
+ * )
  */
 class User implements UserInterface 
 {
@@ -19,23 +25,34 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\NotBlank(message="Merci de renseigner votre prénom")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Merci de renseigner votre nom de famille")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Veuillez renseigner un email valide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=8,minMessage="Votre mot de passe doit faire au moins 8 caractères")
+     * @Assert\Regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/", message="Votre mot de passe doit contenir au minimum une majuscule, une minuscule et un chiffre")
      */
     private $pswd;
+    /**
+     * @Assert\EqualTo(propertyPath="pswd", message="Vos mots de passes ne sont pas identiques")
+     *
+     * 
+     */
+    public $pswdConfirm;
 
     public function getId(): ?int
     {

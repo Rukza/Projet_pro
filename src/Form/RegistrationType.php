@@ -37,6 +37,7 @@ class RegistrationType extends AbstractType
             ->add('lastName',TextType::class,$this->getConfiguration("Nom", "Veuillez renseigner votre nom"))
             ->add('email',EmailType::class,$this->getConfiguration("Email", "Veuillez renseigner votre email"))
             ->add('pswd',PasswordType::class,$this->getConfiguration("Mot de passe", "Veuillez renseigner votre mot de passe"))
+            ->add('pswdConfirm',PasswordType::class,$this->getConfiguration("Confirmation de mot de passe", "Confirmer votre mot de passe"))
         ;
     }
 
