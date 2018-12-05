@@ -14,16 +14,18 @@
     {% include 'partial/header.html.twig'%}
 
     {% for label, messages in app.flashes %}
-        <div class="container mt-5">
-            <div class="alert alert-{{ label }}">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
+    <div class="container mt-5">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
         </div>
+    </div>
     {% endfor %}
     {% block body %}{% endblock %}
 
+    {% include 'partial/footer.html.twig'%}
+    
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>

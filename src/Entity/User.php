@@ -54,6 +54,14 @@ class User implements UserInterface
      */
     public $pswdConfirm;
 
+
+        /**
+         * 
+         * @Assert\NotBlank
+         * 
+         */
+    public $checkConsent;
+
     public function getId(): ?int
     {
         return $this->id;

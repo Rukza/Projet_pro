@@ -3,22 +3,44 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
+
+
 <div class="container">
-    <h1>Inscrivez vous sur notre site pour accéder au fonctionnalité du "X"</h1>
+    <h1 class="my-5">Inscrivez vous sur notre site!!!</h1>
+
+
+
+    {{ form_start(form)}}
+
     <div class="row">
-        <div class="col-md-12">
-            <div class="bg-light py-5 px-5 mt-5">
-
-                {{ form_start(form) }}
-
-                {{ form_widget(form) }}
-                <button type="submit" class="btn btn-success">Confirmez l'insciption</button>
-                {{ form_end(form) }}
+        <div class="col">
+            <div class="alert alert-dark">
+                <h2 class="alert-heading">Informations générales</h2>
+                <hr>
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
             </div>
+            <div class="alert alert-dark">
+                <h2 class="alert-heading">
+                    Mot de passe
+                </h2>
+                <hr>
+                {{form_row(form.pswd)}}
+                {{form_row(form.pswdConfirm)}}
+                
+            </div>
+            {{form_row(form.checkConsent)}}
+
+            <button class="btn btn-success"><i class="fas fa-check"></i> confirmez l'Inscription
+
+            </button>
         </div>
     </div>
 </div>
+</div>
 
-
+{{ form_end(form)}}
+</div>
 
 {% endblock %}
