@@ -84,9 +84,9 @@ class Contact
         return $this->sujet;
     }
 
-    public function setSujet(?string $message): self
+    public function setSujet(?string $sujet): self
     {
-        $this->message = $sujet;
+        $this->sujet = $sujet;
 
         return $this;
     }
