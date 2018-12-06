@@ -3,13 +3,30 @@
 {% block title %}Pour nous contacter{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="card-body bg-dark mt-5">
-    
-        {{ form_start(form) }}
-    
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-        {{ form_end(form) }}
+{{ form_start(form)}}
+<div class="container mt-5">
+<h2>Pour nous contacter remplissez le formulaire</h2>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="alert alert-dark">
+        <h3 class="alert-heading">Communiquez nous vos coordonnées</h3>
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="alert alert-dark">
+         <h3 class="alert-heading">Communiquez nous votre demande</h3>
+                {{ form_row(form.sujet) }}
+                <br>
+                {{ form_row(form.message) }}
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          
+        </div>
     </div>
 </div>
+{{ form_end(form)}}
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
+use App\Notification\MailNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,7 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder){
+    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, MailNotification $valitation ){
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -63,9 +64,10 @@ class AccountController extends AbstractController
         $manager->persist($user);
         $manager->flush();
 
+        $valitation->confirmation($user);
         $this->addFlash(
             'success',
-            "votre compte a bien été crée!"
+            "votre compte a bien été crée!, un email vas vous être envoyé"
 
             
         );
