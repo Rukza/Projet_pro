@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints as CaptchaAssert;
 
 class Contact
 {
@@ -42,7 +43,23 @@ class Contact
      * @Assert\Length(min=10)
      */
     private $message;
+    
+    /**
+     * @CaptchaAssert\ValidCaptcha(
+     * message = "CAPTCHA validation failed, try again."
+     * )
+     */
+    protected $captchaCode;
 
+    public function getCaptchaCode()
+    {
+        return $this->captchaCode;
+    }
+
+    public function setCaptchaCode($captchaCode)
+    {
+        $this->captchaCode = $captchaCode;
+    }
     public function getFirstName(): ?string
     {
         return $this->firstName;

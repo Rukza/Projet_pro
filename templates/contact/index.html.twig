@@ -3,8 +3,17 @@
 {% block title %}Pour nous contacter{% endblock %}
 
 {% block body %}
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("a[title ~= 'BotDetect']").removeAttr("style");
+    $("a[title ~= 'BotDetect']").removeAttr("href");
+    $("a[title ~= 'BotDetect']").css('visibility', 'hidden');
+
+});
+</script>
 {{ form_start(form)}}
-<div class="container mt-5">
+<div class="container mt-4">
 <h2>Pour nous contacter remplissez le formulaire</h2>
 </div>
 
@@ -12,17 +21,23 @@
     <div class="col-md-6">
         <div class="alert alert-dark">
         <h3 class="alert-heading">Communiquez nous vos coordonnées</h3>
+        <br>    
             {{ form_row(form.firstName) }}
+            <br>
             {{ form_row(form.lastName) }}
+            <br>
             {{ form_row(form.email) }}
+            <br>
         </div>
     </div>
     <div class="col-md-6">
         <div class="alert alert-dark">
          <h3 class="alert-heading">Communiquez nous votre demande</h3>
+         <br>
                 {{ form_row(form.sujet) }}
                 <br>
                 {{ form_row(form.message) }}
+                {{ form_row(form.captchaCode)}}
             <button type="submit" class="btn btn-primary">Envoyer</button>
           
         </div>
