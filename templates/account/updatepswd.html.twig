@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du mot de passe{% endblock %}
+
+{% block body%}
+
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-12">
+                <h1 class="my-5">Modification du mot de passe de {{app.user.FullName}}</h1>
+                <div class="alert alert-dark">
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary float-right">
+                    
+                    Enregistrer le nouveau mot de passe</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

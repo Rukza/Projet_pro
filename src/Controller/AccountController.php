@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use Symfony\Component\Form\FormError;
+use App\Form\PasswordUpdateType;
 use App\Notification\MailNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -31,6 +35,7 @@ class AccountController extends AbstractController
                 'hasError' => $error !== null,
                 'username' => $username
         ]);
+        
     }
     /**
      * Permet gérer la déconnection 
@@ -77,5 +82,120 @@ class AccountController extends AbstractController
         return $this->render('account/registration.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     *Permet d'afficher les fonctionnalitées reservé au profil inscrit
+     *
+     * @Route("/account/logged", name="account_logged")
+     * 
+     * @return Response
+     */
+
+    public function account(){
+        return $this->render('account/logged.html.twig');
+    }
+    
+    /**
+     *Permet d'afficher et de modifier les données du compte
+     *
+     * @Route("/account/profile", name="account_profile")
+     * 
+     * @return Response
+     */
+
+    public function profile(Request $request, ObjectManager $manager){
+        $user = $this->getUser();
+
+        $form = $this->createForm(AccountType::class, $user);
+
+        $form->handleRequest($request); 
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre email a bien été modifié'
+            );
+            return $this->redirectToRoute('account_logged');
+        }
+
+        
+        return $this->render('account/profile.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     *Permet de modifier le mot de passe
+     *
+     * @Route("/account/updatepswd", name="account_updatepswd")
+     * 
+     * @return Response
+     */
+
+    public function updatepswd(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager){
+        $passwordUpdate = new PasswordUpdate();
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getPswd())){
+
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel!"));
+                } else {
+
+                    $newPassword = $passwordUpdate->getNewPassword();
+                    $pswd = $encoder->encodePassword($user, $newPassword);
+
+                    $user->setPswd($pswd);
+
+                    $manager->persist($user);
+                    $manager->flush();
+
+                    $this->addFlash(
+                        'success',
+                        "Votre mot de passe a bien été modifié"
+                    );
+
+                    return $this->redirectToRoute('homepage');
+
+                }
+                
+
+            }
+        
+        return $this->render('account/updatepswd.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     *Permet d'afficher et de lier un bracelet au compte
+     *
+     * @Route("/account/link", name="account_link")
+     * 
+     * @return Response
+     */
+
+    public function link(){
+        return $this->render('account/link.html.twig');
+    }
+     /**
+     *Permet d'afficher les données de fréquance cardiaque d'un bracelet
+     *
+     * @Route("/account/cardio", name="account_cardio")
+     * 
+     * @return Response
+     */
+
+    public function cardio(){
+        return $this->render('account/cardio.html.twig');
     }
 }

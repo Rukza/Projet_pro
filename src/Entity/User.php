@@ -53,13 +53,11 @@ class User implements UserInterface
      * 
      */
     public $pswdConfirm;
-
-
-        /**
-         * 
-         * @Assert\NotBlank
-         * 
-         */
+    /**
+    * 
+    * @Assert\NotBlank(groups={"registration"})
+    * 
+    */
     public $checkConsent;
 
     public function getId(): ?int
@@ -115,6 +113,10 @@ class User implements UserInterface
         return $this;
     }
 
+    //Mise en place d'une fonction pour avoir le nom complet et simplifier le code
+    public function getFullName(){
+    return "{$this->firstName} {$this->lastName}";
+}
 
         // Returns the roles granted to the user.
     public function getRoles(){

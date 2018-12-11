@@ -12,26 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 
 
-class ContactType extends AbstractType
+class ContactType extends ApplicationType
 {
 
-    private function getConfiguration($label, $placeholder){
-        return [
-            'label' => $label,
-            'attr'  =>[
-                'placeholder' => $placeholder
-            ]
-            ];
-    }
-    /**
-         * Configuration de base d'un champ
-         *
-         * @param string $label
-         * @param string $placeholder
-         * @param array $options
-         * 
-         * @return array
-         */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
