@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du mot de passe{% endblock %}
+
+{% block body%}
+<div class="container ">
+    <div class="row ">
+        <div class="col-md-12">
+            <h1 class="my-5">Mot de passe oublié ?</h1>
+            <p>Demandez à réinitialiser votre mot de passe en renseignant votre mail.</p>
+
+            {{form_start(form)}}
+            {{form_row(form.email)}}
+            <button class="btn btn-success"type="submit">Envoyer</button>
+            {{form_end(form)}}
+        </div>
+    </div>
+</div>
+{% endblock %}

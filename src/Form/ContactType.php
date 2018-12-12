@@ -3,13 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Contact;
-use Symfony\Component\Form\AbstractType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 
 
 class ContactType extends ApplicationType

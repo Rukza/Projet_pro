@@ -60,6 +60,21 @@ class User implements UserInterface
     */
     public $checkConsent;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     * 
+     */
+    private $passwordRequestedAt;
+ 
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+
+    private $token;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -116,7 +131,32 @@ class User implements UserInterface
     //Mise en place d'une fonction pour avoir le nom complet et simplifier le code
     public function getFullName(){
     return "{$this->firstName} {$this->lastName}";
-}
+    }
+
+
+
+    public function getPasswordRequestedAt()
+    {
+        return $this->passwordRequestedAt;
+    }
+
+    public function setPasswordRequestedAt($passwordRequestedAt)
+    {
+        $this->passwordRequestedAt = $passwordRequestedAt;
+        return $this;
+    }
+
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+        return $this;
+    }
 
         // Returns the roles granted to the user.
     public function getRoles(){
