@@ -4,16 +4,63 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ResettingType;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Notification\MailPswdReset;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class ResettingController extends Controller
 {
             
-    // si supérieur à 10min, retourne false
+
+/**
+     * Permet de demander et de recevoir par mail une reinitialisation du mot de passe
+     *
+     * @route("/requete", name="requete_reset")
+     */
+    public  function requestpswd(Request $request, MailPswdReset $mailer, TokenGeneratorInterface $tokenGenerator){
+
+        $form = $this->createFormBuilder()
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new Email(),
+                    new NotBlank()
+                ]
+            ])
+            ->getForm();
+            $form->handleRequest($request);
+                    if ($form->isSubmitted() && $form->isValid()){
+                        $em = $this->getDoctrine()->getManager();
+                        $user = $em->getRepository(User::class)->findOneByEmail($form->getData()['email']);
+
+                        if (!$user){
+                            $request->getSession()->getFlashBag()->add('Warning', "Une erreur est survenu veuillez réitérer l'opération");
+                            return $this->redirectToRoute("requete_reset");
+                        }
+                        $user->setToken($tokenGenerator->generateToken());
+                        $user->setPasswordRequestedAt(new \Datetime());
+                        $em->flush();
+
+                        $bodyMail = $mailer->createBodyMail('emails/mailreset.html.twig', [
+                            'user' => $user
+                            ]);
+                            $mailer->sendMessage('noreply@wristband.com', $user->getEmail(), 'renouvellement du mot de passe', $bodyMail);
+                            $request->getSession()->getFlashBag()->add('succes', "Si vous été inscrit sur notre site, un email va vous être envoyé afin que vous puissiez renouveller votre mot de passe. Le lien ne sera valide que 24h!!!");
+
+                            return $this->redirectToRoute("account_login");
+                    }
+                    return $this->render('account/resettingpswd.html.twig',[
+                        'form' => $form->createView()
+                    ]);
+    }
+     // si supérieur à 10min, retourne false
     // sinon retourne false
     private function isRequestInTime(\Datetime $passwordRequestedAt = null)
     {
@@ -24,14 +71,13 @@ class ResettingController extends Controller
         
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
-
-        $daySeconds = 60 * 60 * 24;
+        $daySeconds = 60 * 10;
         $response = $interval > $daySeconds ? false : $reponse = true;
         return $response;
     }
 
     /**
-     * @Route("/{id}/{token}", name="resetting")
+     * @Route("account/resettingpswd/{id}/{token}", name="reset")
      */
     public function resetting(User $user, $token, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {

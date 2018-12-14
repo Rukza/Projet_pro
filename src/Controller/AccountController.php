@@ -2,25 +2,23 @@
 
 namespace App\Controller;
 
+
 use App\Entity\User;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
-use App\Notification\MailPswdReset;
 use Symfony\Component\Form\FormError;
 use App\Notification\MailNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+
+
 
 class AccountController extends AbstractController
 {
@@ -181,46 +179,7 @@ class AccountController extends AbstractController
         ]);
     }
     
-    /**
-     * Permet de demander et de recevoir par mail une reinitialisation du mot de passe
-     *
-     * @route("/requete", name="requete_reset")
-     */
-    public  function requestpswd(Request $request, MailPswdReset $mailer, TokenGeneratorInterface $tokenGenerator){
-
-        $form = $this->createFormBuilder()
-            ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Email(),
-                    new NotBlank()
-                ]
-            ])
-            ->getForm();
-            $form->handleRequest($request);
-                    if ($form->isSubmitted() && $form->isValid()){
-                        $em = $this->getDoctrine()->getManager();
-                        $user = $em->getRepository(User::class)->findOneByEmail($form->getData()['email']);
-
-                        if (!$user){
-                            $request->getSession()->getFlashBag()->add('Warning', "Une erreur est survenu veuillez réitérer l'opération");
-                            return $this->redirectToRoute("requete_reset");
-                        }
-                        $user->setToken($tokenGenerator->generateToken());
-                        $user->setPasswordRequestedAt(new \Datetime());
-                        $em->flush();
-
-                        $bodyMail = $mailer->createBodyMail('emails/mailreset.html.twig', [
-                            'user' => $user
-                            ]);
-                            $mailer->sendMessage('noreply@wristband.com', $user->getEmail(), 'renouvellement du mot de passe', $bodyMail);
-                            $request->getSession()->getFlashBag()->add('succes', "Si vous été inscrit sur notre site, un email va vous être envoyé afin que vous puissiez renouveller votre mot de passe. Le lien ne sera valide que 24h!!!");
-
-                            return $this->redirectToRoute("account_login");
-                    }
-                    return $this->render('account/resettingpswd.html.twig',[
-                        'form' => $form->createView()
-                    ]);
-    }
+    
     
     /**
      *Permet d'afficher et de lier un bracelet au compte
