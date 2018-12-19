@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(
  * fields={"email"},
- * message="Adresse mail incompatible vueillez en rentrer une autre"
+ * message="Adresse mail incompatible veuillez en rentrer une autre"
  * )
  */
 class User implements UserInterface 
@@ -81,6 +81,11 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
      */
     private $userRoles;
+
+    /**
+     * @ORM\Column(type="integer",options={"default":0})
+     */
+    private $active='0';
 
     public function __construct()
     {
@@ -226,6 +231,18 @@ class User implements UserInterface
                 $this->userRoles->removeElement($userRole);
                 $userRole->removeUser($this);
             }
+
+            return $this;
+        }
+
+        public function getActive(): ?int
+        {
+            return $this->active;
+        }
+
+        public function setActive(int $active): self
+        {
+            $this->active = $active;
 
             return $this;
         }

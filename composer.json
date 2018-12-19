@@ -8,6 +8,7 @@
         "captcha-com/symfony-captcha-bundle": "4.*",
         "fzaninotto/faker": "^1.8",
         "sensio/framework-extra-bundle": "^5.1",
+        "sensiolabs/security-checker": "^5.0",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",
@@ -62,7 +63,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"

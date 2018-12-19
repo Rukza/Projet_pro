@@ -71,7 +71,7 @@ class ResettingController extends Controller
         
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
-        $daySeconds = 60 * 10;
+        $daySeconds = 60 * 10;//to do passé a 24h la validation
         $response = $interval > $daySeconds ? false : $reponse = true;
         return $response;
     }

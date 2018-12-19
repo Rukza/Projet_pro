@@ -17,8 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 
 
@@ -59,7 +61,7 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, MailNotification $valitation ){
+    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, MailNotification $valitation, TokenGeneratorInterface $tokenGenerator ){
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -70,6 +72,7 @@ class AccountController extends AbstractController
 
         $hash = $encoder->encodePassword($user, $user->getPswd());
         $user->setPswd($hash);
+        $user->setToken($tokenGenerator->generateToken());
 
         $manager->persist($user);
         $manager->flush();
@@ -77,7 +80,7 @@ class AccountController extends AbstractController
         $valitation->confirmation($user);
         $this->addFlash(
             'success',
-            "votre compte a bien été crée!, un email vas vous être envoyé"
+            "votre compte a bien été crée!, un email vas vous être envoyé afin de confirmer votre compte"
 
             
         );
@@ -88,6 +91,32 @@ class AccountController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+     /**
+     * @Route("account/validate/{id}/{token}", name="validate")
+     */
+    public function resetting(User $user, $token, ObjectManager $manager,  Request $request)
+    {
+      
+        if ($user->getToken() === null || $token !== $user->getToken())
+        {
+            throw new AccessDeniedHttpException();
+        }
+            // réinitialisation du token à null et passage du compte a vérifié
+            $user->setToken(null);
+            $user->setActive(1);
+           
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($user);
+            $manager->flush();
+
+            $request->getSession()->getFlashBag()->add('success', "Votre compte a été validé.");
+
+            return $this->redirectToRoute('account_login');
+
+        }
+
 
     /**
      *Permet d'afficher les fonctionnalitées reservé au profil inscrit
@@ -105,7 +134,7 @@ class AccountController extends AbstractController
      *Permet d'afficher et de modifier les données du compte
      *
      * @Route("/account/profile", name="account_profile")
-     * @IsGranted("ROLE_USER", statusCode=404, message="No access! Get out!")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
 
