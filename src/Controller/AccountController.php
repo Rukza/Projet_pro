@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -91,7 +93,7 @@ class AccountController extends AbstractController
      *Permet d'afficher les fonctionnalitées reservé au profil inscrit
      *
      * @Route("/account/logged", name="account_logged")
-     * 
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
 
@@ -103,7 +105,7 @@ class AccountController extends AbstractController
      *Permet d'afficher et de modifier les données du compte
      *
      * @Route("/account/profile", name="account_profile")
-     * 
+     * @IsGranted("ROLE_USER", statusCode=404, message="No access! Get out!")
      * @return Response
      */
 
@@ -133,7 +135,7 @@ class AccountController extends AbstractController
     
     /**
      *Permet de modifier le mot de passe
-     *
+     * @IsGranted("ROLE_USER")
      * @Route("/account/updatepswd", name="account_updatepswd")
      * 
      * @return Response
@@ -185,7 +187,7 @@ class AccountController extends AbstractController
      *Permet d'afficher et de lier un bracelet au compte
      *
      * @Route("/account/link", name="account_link")
-     * 
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
 
@@ -196,7 +198,7 @@ class AccountController extends AbstractController
      *Permet d'afficher les données de fréquance cardiaque d'un bracelet
      *
      * @Route("/account/cardio", name="account_cardio")
-     * 
+     * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
      * @return Response
      */
 
