@@ -17,7 +17,9 @@ security:
             security: false
         main:
             anonymous: true
-
+            pattern:    ^/
+            http_basic: ~
+            user_checker: App\Security\UserChecker
             provider: in_database
 
             form_login: 

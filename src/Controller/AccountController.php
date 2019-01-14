@@ -104,7 +104,7 @@ class AccountController extends AbstractController
         }
             // réinitialisation du token à null et passage du compte a vérifié
             $user->setToken(null);
-            $user->setActive(1);
+            $user->setActive(true);
            
 
             $manager = $this->getDoctrine()->getManager();

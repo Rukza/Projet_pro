@@ -83,13 +83,14 @@ class User implements UserInterface
     private $userRoles;
 
     /**
-     * @ORM\Column(type="integer",options={"default":0})
-     */
-    private $active='0';
+	 * @ORM\Column(type="boolean")
+	 */
+    private $active;
 
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
+        $this->active = false;
     }
 
     public function getId(): ?int
