@@ -13,13 +13,11 @@ $(document).ready(function(){
 });
 </script>
 {{ form_start(form)}}
-<div class="container mt-4">
-<h2>Pour nous contacter remplissez le formulaire</h2>
-</div>
 
-<div class="row mt-5">
+
+<div class="row mt-5 ml-2 mr-2">
     <div class="col-md-6">
-        <div class="alert alert-dark">
+        <div class="light bg-light">
         <h3 class="alert-heading">Communiquez nous vos coordonnées</h3>
         <br>    
             {{ form_row(form.firstName) }}
@@ -30,8 +28,8 @@ $(document).ready(function(){
             <br>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="alert alert-dark">
+    <div class="col-md-6 ">
+        <div class="light bg-light">
          <h3 class="alert-heading">Communiquez nous votre demande</h3>
          <br>
                 {{ form_row(form.sujet) }}

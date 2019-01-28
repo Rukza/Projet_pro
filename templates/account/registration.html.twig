@@ -5,42 +5,43 @@
 {% block body %}
 
 
-<div class="container">
-    <h1 class="my-5">Inscrivez vous sur notre site!!!</h1>
-
-
 
     {{ form_start(form)}}
 
-    <div class="row">
-        <div class="col">
-            <div class="alert alert-dark">
+    <div class="row mt-5 ml-2 mr-2">
+        <div class="col-md-6">
+            <div class="light bg-light">
                 <h2 class="alert-heading">Informations générales</h2>
                 <hr>
                 {{ form_row(form.firstName) }}
                 {{ form_row(form.lastName) }}
                 {{ form_row(form.email) }}
             </div>
-            <div class="alert alert-dark">
+        </div>
+        <div class="col-md-6">
+            <div class="light bg-light">
                 <h2 class="alert-heading">
                     Mot de passe
                 </h2>
                 <hr>
                 {{form_row(form.pswd)}}
                 {{form_row(form.pswdConfirm)}}
-                
+
             </div>
-            {{form_row(form.checkConsent)}}
+            
+        </div>
+        <div class="col-md-12 mt-5">
+        {{form_row(form.checkConsent)}}
 
             <button class="btn btn-success"> confirmez l'Inscription
 
             </button>
-        </div>
+            </div>
     </div>
-</div>
-</div>
+
+
 
 {{ form_end(form)}}
-</div>
+
 
 {% endblock %}
