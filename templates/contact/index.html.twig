@@ -15,9 +15,9 @@ $(document).ready(function(){
 {{ form_start(form)}}
 
 
-<div class="row mt-5 ml-2 mr-2">
+<div class="row ml-2 mr-2">
     <div class="col-md-6">
-        <div class="light bg-light">
+        <div class="jumbotron bg-light">
         <h3 class="alert-heading">Communiquez nous vos coordonnées</h3>
         <br>    
             {{ form_row(form.firstName) }}
@@ -28,8 +28,8 @@ $(document).ready(function(){
             <br>
         </div>
     </div>
-    <div class="col-md-6 ">
-        <div class="light bg-light">
+    <div class="col-md-6">
+        <div class="jumbotron bg-light">
          <h3 class="alert-heading">Communiquez nous votre demande</h3>
          <br>
                 {{ form_row(form.sujet) }}
@@ -41,5 +41,6 @@ $(document).ready(function(){
         </div>
     </div>
 </div>
+
 {{ form_end(form)}}
 {% endblock %}

@@ -4,14 +4,14 @@
 
 {% block body%}
 <div class="container ">
-    <div class="row ">
-        <div class="col-md-12">
+    <div class="row mt-5">
+        <div class="col-md-12 jumbotron bg-light ">
             <h1 class="my-5">Mot de passe oublié ?</h1>
             <p>Demandez à réinitialiser votre mot de passe en renseignant votre mail.</p>
-
+            <br>
             {{form_start(form)}}
             {{form_row(form.email)}}
-            <button class="btn btn-success"type="submit">Envoyer</button>
+            <button class="btn btn-primary"type="submit">Envoyer</button>
             {{form_end(form)}}
         </div>
     </div>
