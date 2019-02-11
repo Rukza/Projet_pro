@@ -6,24 +6,23 @@
 <div class="container text-center">
     <h1 class="my-5">Profile de {{app.user.FullName}}</h1>
     <div class="row">
-        <div class="col-md-6">
-            <div class="alert alert-dark">
-                <h4 class="alert-heading">Modifier les données du compte</h4>
-                <br>
+        <div class="col-md-12">
+            <div class="jumbotron bg-light">
+                <h4>Modifier les données du compte</h4>
+                <hr>
+               
                 <a href="{{ path('account_profile') }}">Modfier votre profil</a>
                 <br>
-                <hr>
                 <a href="{{ path('account_updatepswd') }}">Modfier votre mot de passe</a>
                 <br>
-            </div>
-        </div>
-            <div class="col-md-6">
-                <div class="alert alert-dark">
-                    <h4 class="alert-heading">Acceder au fonction du bracelet</h4>
-                    <br>
+                <br>
+                <br>
+       
+                    <h4>Acceder au fonction du bracelet</h4>
+                    <hr>
+                    
                     <a href="{{ path('account_link') }}">Lier un bracelet a se compte</a>
                     <br>
-                    <hr>
                     <a href="{{ path('account_cardio') }}">Voir les données cardio d'un bracelet</a>
                 </div>
             </div>
