@@ -3,5 +3,26 @@
 {% block title %}Lier un bracelet{% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row mt-5">
+        
+        <div class="col-md-12">
+            <div class="jumbotron bg-light mt-5">
+                <h1>Lier un bracelet a votre compte</h1>
 
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="password">Code de liaison</label>
+                        <input type="password" name="_password" id="password" class="form-control" placeholder="Veuillez code de liaison"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Lier le compte</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
