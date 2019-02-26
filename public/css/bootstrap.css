@@ -11475,6 +11475,7 @@ a.text-dark:focus {
 
 /*==========================footer1===========================*/
 .footer1 {
+  padding-top: 60px;
   background-color: #131919;
   color: white;
 

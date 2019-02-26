@@ -4,16 +4,18 @@
 {% block body %}
 <div class="container">
     <div class="row mt-5">
-        <div class="col-md-8">
-            <h1 class="my-5">Modification du profile de {{app.user.FullName}}</h1>
-            <div class="jumbotron bg-light ">
-                {{ form_start(form)}}
+        <div class="col-md-12">
+            <h1 class="my-5 text-center">Modification du profile de {{app.user.FullName}}</h1><br>
+            <div class="jumbotron bg-light">
+                <div class="mt-5">
+                    {{ form_start(form)}}
 
-                {{ form_row(form.email) }}
+                    {{ form_row(form.email) }}
 
-                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
 
-                {{ form_end(form)}}
+                    {{ form_end(form)}}
+                </div>
             </div>
         </div>
     </div>

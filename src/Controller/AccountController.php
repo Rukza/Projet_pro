@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Form\AccountType;
+use App\Entity\SerialNumber;
 use App\Entity\PasswordUpdate;
+use App\Form\SerialNumberType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,9 +124,37 @@ class AccountController extends AbstractController
      * @return Response
      */
 
-    public function link(){
+    public function link(Request $request,ObjectManager $manager){
+
+    
+        $form = $this->createForm(SerialNumberType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            
+            $number = $form->getData();
+            
+            /*
+            - Vérification si code correspond en bdd
+            - Si il a jamais été lier
+            - Si NON alors add role mother et liaison acceptées
+
+            - Envois du mail au cpt mère pour autorisation
+            - Si acceptation liaison et ajout role child
+            */
+            
+            $manager->persist($number);
+            $manager->flush;
+
+            $this->addFlash(
+                'success',
+                "Compte lier"
+            );
+
+        }
         
-        return $this->render('account/link.html.twig');
+        return $this->render('account/link.html.twig',[
+            'form' => $form->createView()]);
     }
      /**
      *Permet d'afficher les données de fréquance cardiaque d'un bracelet
