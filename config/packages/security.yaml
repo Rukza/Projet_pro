@@ -24,7 +24,8 @@ security:
 
             form_login: 
                 login_path: account_login
-                check_path: account_login   
+                check_path: account_login  
+                csrf_token_generator: security.csrf.token_manager
 
             logout:
                 path: account_logout

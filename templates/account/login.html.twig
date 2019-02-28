@@ -7,7 +7,7 @@
 
 <div class="container">
     <div class="row mt-5">
-        
+
         <div class="col-md-12">
             <div class="jumbotron bg-light mt-5">
                 <h1>Connectez vous</h1>
@@ -28,6 +28,7 @@
                         <input type="password" name="_password" id="password" class="form-control" placeholder="Mot de passe"
                             required>
                     </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Connexion</button>
                         <a href="{{path('requete_reset')}}"> Mot de passe oublié</a>
