@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
+use App\Entity\User;
 use App\Form\AccountType;
 use App\Entity\SerialNumber;
 use App\Entity\PasswordUpdate;
 use App\Form\SerialNumberType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
+use App\Notification\MailLinkWristlet;
+use App\Notification\MailNotification;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -124,7 +129,7 @@ class AccountController extends AbstractController
      * @return Response
      */
 
-    public function link(Request $request,ObjectManager $manager){
+    public function link(Request $request,ObjectManager $manager, MailLinkWristlet $contactMother){
 
     
         $form = $this->createForm(SerialNumberType::class);
@@ -132,25 +137,44 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             
-            $number = $form->getData();
             
-            /*
-            - Vérification si code correspond en bdd
-            - Si il a jamais été lier
-            - Si NON alors add role mother et liaison acceptées
+            $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
+            $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
+            $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
+            
+            if ($numberBdd->getActive() === !null )
+            {
+                $contactMother->notifyMother();   
+                $this->addFlash("warning", "Le bracelet a déjà été lier et nomé.Un mail de confirmation au compte principale a été envoyer.
+                Vous devez attrendre la confirmation de la personne détenteur du compte principale.");
+                    
+                
+            }else{
 
-            - Envois du mail au cpt mère pour autorisation
-            - Si acceptation liaison et ajout role child
-            */
+           
+                /* selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
+            $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
+            $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
+            $wristletAdded = $numberBdd;
+            $user = $this->getUser();
+           
+            $wristletAdded->addUserNumber($user);
             
-            $manager->persist($number);
-            $manager->flush;
+            
+                       
+            $roleAdded->addUser($user);
+            
+            $manager->flush();
+            $manager->persist($roleAdded);
+            $manager->persist($wristletAdded);
 
             $this->addFlash(
                 'success',
-                "Compte lier"
+                "Compte lier, veuillez vous identifier a nouveau."
             );
-
+           
+            return $this->redirectToRoute('account_login');
+        }
         }
         
         return $this->render('account/link.html.twig',[
@@ -159,12 +183,12 @@ class AccountController extends AbstractController
      /**
      *Permet d'afficher les données de fréquance cardiaque d'un bracelet
      *
-     * @Route("/account/cardio", name="account_cardio")
+     * @Route("/account/cardiolist", name="account_cardio")
      * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
      * @return Response
      */
 
     public function cardio(){
-        return $this->render('account/cardio.html.twig');
+        return $this->render('account/cardiolist.html.twig');
     }
 }

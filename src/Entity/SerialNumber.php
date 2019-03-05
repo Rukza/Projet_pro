@@ -21,21 +21,27 @@ class SerialNumber
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Serial;
+    private $serialWristlet;
+
+     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $wristletTitle;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $Active;
+    private $active;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userSerialNumber")
      */
-    private $UserNumber;
+    private $userNumber;
 
     public function __construct()
     {
-        $this->UserNumber = new ArrayCollection();
+        $this->userNumber = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,26 +49,39 @@ class SerialNumber
         return $this->id;
     }
 
-    public function getSerial(): ?string
+    public function getSerialWristlet(): ?string
     {
-        return $this->Serial;
+        return $this->serialWristlet;
     }
 
-    public function setSerial(string $Serial): self
+    public function setSerialWristlet(string $serialWristlet): self
     {
-        $this->Serial = $Serial;
+        $this->serialWristlet = $serialWristlet;
+
+        return $this;
+    }
+
+
+    public function getWristletTitle(): ?string
+    {
+        return $this->wristletTitle;
+    }
+
+    public function setWristletTitle(string $wristletTitle): self
+    {
+        $this->wristletTitle = $wristletTitle;
 
         return $this;
     }
 
     public function getActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
     public function setActive(?bool $Active): self
     {
-        $this->Active = $Active;
+        $this->Active = $active;
 
         return $this;
     }
@@ -72,13 +91,13 @@ class SerialNumber
      */
     public function getUserNumber(): Collection
     {
-        return $this->UserNumber;
+        return $this->userNumber;
     }
 
     public function addUserNumber(User $userNumber): self
     {
-        if (!$this->UserNumber->contains($userNumber)) {
-            $this->UserNumber[] = $userNumber;
+        if (!$this->userNumber->contains($userNumber)) {
+            $this->userNumber[] = $userNumber;
         }
 
         return $this;
@@ -86,8 +105,8 @@ class SerialNumber
 
     public function removeUserNumber(User $userNumber): self
     {
-        if ($this->UserNumber->contains($userNumber)) {
-            $this->UserNumber->removeElement($userNumber);
+        if ($this->userNumber->contains($userNumber)) {
+            $this->userNumber->removeElement($userNumber);
         }
 
         return $this;

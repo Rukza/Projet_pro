@@ -88,7 +88,7 @@ class User implements UserInterface
     private $active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\SerialNumber", mappedBy="UserNumber")
+     * @ORM\ManyToMany(targetEntity="App\Entity\SerialNumber", mappedBy="userNumber")
      */
     private $userSerialNumber;
 
