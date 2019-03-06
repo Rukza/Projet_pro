@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Notification\Mailer;
 use App\Form\RegistrationType;
-use App\Notification\MailNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
      *
      * @return Response
      */
-    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, MailNotification $valitation, TokenGeneratorInterface $tokenGenerator ){
+    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, Mailer $mailer, TokenGeneratorInterface $tokenGenerator ){
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -41,7 +41,10 @@ class RegistrationController extends AbstractController
         $manager->persist($user);
         $manager->flush();
 
-        $valitation->confirmation($user);
+        $bodyMail = $mailer->createBodyMail('emails/confirmation.html.twig', [
+            'user' => $user
+            ]);
+            $mailer->sendMessage('noreply@wristband.com', $user->getEmail(), 'Validation du compte', $bodyMail);
         $this->addFlash(
             'success',
             "votre compte a bien été crée! Un email vas vous être envoyé afin de confirmer votre compte"

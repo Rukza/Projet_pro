@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\AccountType;
@@ -10,8 +11,6 @@ use App\Entity\PasswordUpdate;
 use App\Form\SerialNumberType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
-use App\Notification\MailLinkWristlet;
-use App\Notification\MailNotification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,7 +19,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use App\Notification\Mailer;
 
 
 
@@ -129,52 +129,81 @@ class AccountController extends AbstractController
      * @return Response
      */
 
-    public function link(Request $request,ObjectManager $manager, MailLinkWristlet $contactMother){
+    public function link(Request $request,ObjectManager $manager, Mailer $contactMother, TokenGeneratorInterface $tokenGenerator){
 
     
         $form = $this->createForm(SerialNumberType::class);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            
-            
-            $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
-            $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
-            $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
-            
-            if ($numberBdd->getActive() === !null )
-            {
-                $contactMother->notifyMother();   
-                $this->addFlash("warning", "Le bracelet a déjà été lier et nomé.Un mail de confirmation au compte principale a été envoyer.
-                Vous devez attrendre la confirmation de la personne détenteur du compte principale.");
-                    
+
+            /*recuperation des données entré dans le form et de l'utilisateur qui la soumis*/
+                $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
+                $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
+                $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
+                $user = $this->getUser();
+
+            /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
+            if($user->getTokenChildRequest() === !null){
+
+                /*Vérification si le bracelet demandé n'a pas déjà été validé*/
+                if ($numberBdd->getActive() === !null )
+                {
+                    $user = $this->getUser();
+                    $user->setTokenChildRequest($tokenGenerator->generateToken());
+
+                    $numberBdd->setChildRequestedAt(new \Datetime());
                 
+                    $manager->flush();
+                    $manager->persist($numberBdd);
+                    $manager->persist($user);
+                    $bodyMail = $contactMother->createBodyMail('emails/motherconfirmation.html.twig', [
+                                'user' => $user
+                                ]);
+                                $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMailMother(), 'Demande de liaison a un de vos bracelet', $bodyMail);
+                                                            
+                    
+                    $this->addFlash("warning", "Le bracelet a déjà été lier et nomé.Un mail de confirmation au compte principale a été envoyer.
+                    Vous devez attrendre la confirmation de la personne détenteur du compte principale.");
+                        
+                    
+                }else{
+
+            
+                    /* selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
+                $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
+                $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
+                $user = $this->getUser();
+                
+                $userMail = $user->getEmail();
+                
+                $roleAdded->addUser($user);
+                
+                $numberBdd->setActive(true);
+
+                $wristletAdded = $numberBdd;
+                $wristletAdded->addUserNumber($user);
+                $wristletAdded->setMailMother($userMail);
+                
+                        
+                
+                
+                $manager->flush();
+                $manager->persist($roleAdded);
+                $manager->persist($wristletAdded);
+
+                $this->addFlash(
+                    'success',
+                    "Compte lier, veuillez vous identifier a nouveau."
+                );
+                }
+                return $this->redirectToRoute('account_login');
             }else{
 
-           
-                /* selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
-            $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
-            $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
-            $wristletAdded = $numberBdd;
-            $user = $this->getUser();
-           
-            $wristletAdded->addUserNumber($user);
+                $this->addFlash("warning", "Vous avez déjà une demande en attente veuillez attendre, la validation de celle ci");
+                return $this->redirectToRoute('account_logged');   
+            }
             
-            
-                       
-            $roleAdded->addUser($user);
-            
-            $manager->flush();
-            $manager->persist($roleAdded);
-            $manager->persist($wristletAdded);
-
-            $this->addFlash(
-                'success',
-                "Compte lier, veuillez vous identifier a nouveau."
-            );
-           
-            return $this->redirectToRoute('account_login');
-        }
         }
         
         return $this->render('account/link.html.twig',[

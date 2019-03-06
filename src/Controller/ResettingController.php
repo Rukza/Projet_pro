@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ResettingType;
-use App\Notification\MailPswdReset;
+use App\Notification\Mailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Email;
@@ -25,7 +25,7 @@ class ResettingController extends Controller
      *
      * @route("/requete", name="requete_reset")
      */
-    public  function requestpswd(Request $request, MailPswdReset $mailer, TokenGeneratorInterface $tokenGenerator){
+    public  function requestpswd(Request $request, Mailer $mailer, TokenGeneratorInterface $tokenGenerator){
 
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, [

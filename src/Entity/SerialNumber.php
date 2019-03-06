@@ -28,16 +28,30 @@ class SerialNumber
      */
     private $wristletTitle;
 
-
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $active;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mailMother;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     * 
+     */
+    private $childRequestedAt;
+
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userSerialNumber")
      */
     private $userNumber;
+
+
 
     public function __construct()
     {
@@ -79,12 +93,37 @@ class SerialNumber
         return $this->active;
     }
 
-    public function setActive(?bool $Active): self
+    public function setActive(?bool $active): self
     {
-        $this->Active = $active;
+        $this->active = $active;
 
         return $this;
     }
+
+    public function getMailMother(): ?string
+    {
+        return $this->mailMother;
+    }
+
+    public function setMailMother(string $mailMother): self
+    {
+        $this->mailMother = $mailMother;
+
+        return $this;
+    }
+
+
+    public function getChildRequestedAt()
+    {
+        return $this->childRequestedAt;
+    }
+
+    public function setChildRequestedAt($childRequestedAt)
+    {
+        $this->childRequestedAt = $childRequestedAt;
+        return $this;
+    }
+
 
     /**
      * @return Collection|User[]

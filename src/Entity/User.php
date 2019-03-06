@@ -78,6 +78,15 @@ class User implements UserInterface
     private $token;
 
     /**
+     * @var string
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+
+    private $tokenChildRequest;
+
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
      */
     private $userRoles;
@@ -179,6 +188,16 @@ class User implements UserInterface
     public function setToken($token)
     {
         $this->token = $token;
+        return $this;
+    }
+    public function getTokenChildRequest()
+    {
+        return $this->tokenChildRequest;
+    }
+
+    public function setTokenChildRequest($tokenChildRequest)
+    {
+        $this->tokenChildRequest = $tokenChildRequest;
         return $this;
     }
 

@@ -6,7 +6,7 @@ use App\Entity\User;
 use Twig\Environment;
 
 
-class MailPswdReset
+class Mailer
 {
     private $engine;
     private $mailer;
