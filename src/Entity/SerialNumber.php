@@ -38,24 +38,22 @@ class SerialNumber
      */
     private $mailMother;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @var \DateTime
-     * 
-     */
-    private $childRequestedAt;
-
-
-    /**
+     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userSerialNumber")
      */
     private $userNumber;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Requested", mappedBy="requestedFor", orphanRemoval=true)
+     */
+    private $requesteds;
 
 
 
     public function __construct()
     {
         $this->userNumber = new ArrayCollection();
+        $this->requesteds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,19 +110,6 @@ class SerialNumber
         return $this;
     }
 
-
-    public function getChildRequestedAt()
-    {
-        return $this->childRequestedAt;
-    }
-
-    public function setChildRequestedAt($childRequestedAt)
-    {
-        $this->childRequestedAt = $childRequestedAt;
-        return $this;
-    }
-
-
     /**
      * @return Collection|User[]
      */
@@ -146,6 +131,37 @@ class SerialNumber
     {
         if ($this->userNumber->contains($userNumber)) {
             $this->userNumber->removeElement($userNumber);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Requested[]
+     */
+    public function getRequesteds(): Collection
+    {
+        return $this->requesteds;
+    }
+
+    public function addRequested(Requested $requested): self
+    {
+        if (!$this->requesteds->contains($requested)) {
+            $this->requesteds[] = $requested;
+            $requested->setRequestedFor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequested(Requested $requested): self
+    {
+        if ($this->requesteds->contains($requested)) {
+            $this->requesteds->removeElement($requested);
+            // set the owning side to null (unless already changed)
+            if ($requested->getRequestedFor() === $this) {
+                $requested->setRequestedFor(null);
+            }
         }
 
         return $this;

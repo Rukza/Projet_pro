@@ -77,16 +77,7 @@ class User implements UserInterface
 
     private $token;
 
-    /**
-     * @var string
-     * 
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-
-    private $tokenChildRequest;
-
-
-    /**
+     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
      */
     private $userRoles;
@@ -101,11 +92,17 @@ class User implements UserInterface
      */
     private $userSerialNumber;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Requested", mappedBy="requestedBy", orphanRemoval=true)
+     */
+    private $requestedUsers;
+
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
         $this->active = false;
         $this->userSerialNumber = new ArrayCollection();
+        $this->requestedUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,17 +187,7 @@ class User implements UserInterface
         $this->token = $token;
         return $this;
     }
-    public function getTokenChildRequest()
-    {
-        return $this->tokenChildRequest;
-    }
-
-    public function setTokenChildRequest($tokenChildRequest)
-    {
-        $this->tokenChildRequest = $tokenChildRequest;
-        return $this;
-    }
-
+   
     public function getRoles()//renvois la liste des roles sous chaine de caractère
     {
        $roles = $this->userRoles->map(function($role){
@@ -296,6 +283,37 @@ class User implements UserInterface
             if ($this->userSerialNumber->contains($userSerialNumber)) {
                 $this->userSerialNumber->removeElement($userSerialNumber);
                 $userSerialNumber->removeUserNumber($this);
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Requested[]
+         */
+        public function getRequestedUsers(): Collection
+        {
+            return $this->requestedUsers;
+        }
+
+        public function addRequestedUser(Requested $requestedUser): self
+        {
+            if (!$this->requestedUsers->contains($requestedUser)) {
+                $this->requestedUsers[] = $requestedUser;
+                $requestedUser->setRequestedBy($this);
+            }
+
+            return $this;
+        }
+
+        public function removeRequestedUser(Requested $requestedUser): self
+        {
+            if ($this->requestedUsers->contains($requestedUser)) {
+                $this->requestedUsers->removeElement($requestedUser);
+                // set the owning side to null (unless already changed)
+                if ($requestedUser->getRequestedBy() === $this) {
+                    $requestedUser->setRequestedBy(null);
+                }
             }
 
             return $this;

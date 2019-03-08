@@ -5,8 +5,10 @@ namespace App\Controller;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Entity\Requested;
 use App\Form\AccountType;
 use App\Entity\SerialNumber;
+use App\Notification\Mailer;
 use App\Entity\PasswordUpdate;
 use App\Form\SerialNumberType;
 use App\Form\PasswordUpdateType;
@@ -20,7 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-use App\Notification\Mailer;
 
 
 
@@ -129,7 +130,7 @@ class AccountController extends AbstractController
      * @return Response
      */
 
-    public function link(Request $request,ObjectManager $manager, Mailer $contactMother, TokenGeneratorInterface $tokenGenerator){
+    public function link(Request $request, ObjectManager $manager, Mailer $contactMother, TokenGeneratorInterface $tokenGenerator){
 
     
         $form = $this->createForm(SerialNumberType::class);
@@ -142,21 +143,29 @@ class AccountController extends AbstractController
                 $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
                 $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
                 $user = $this->getUser();
+                
 
-            /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
-            if($user->getTokenChildRequest() === !null){
+            /*vérification si l'utilisateur n'a pas déjà une demande en attente
+            if($user->getTokenChildRequest() === !null){*/
 
                 /*Vérification si le bracelet demandé n'a pas déjà été validé*/
                 if ($numberBdd->getActive() === !null )
                 {
-                    $user = $this->getUser();
-                    $user->setTokenChildRequest($tokenGenerator->generateToken());
+                    $requested = new Requested();
 
-                    $numberBdd->setChildRequestedAt(new \Datetime());
-                
+                    $requested->setRequestedToken($tokenGenerator->generateToken());
+
+                    $requested->setRequestedAt(new \Datetime());
+
+                    $requested->setRequestedFor($numberBdd);
+
+                    $requested->setRequestedBy($user);
+                    dump($requested);
+                    
+                    
+                    $manager->persist($requested);
                     $manager->flush();
-                    $manager->persist($numberBdd);
-                    $manager->persist($user);
+                    
                     $bodyMail = $contactMother->createBodyMail('emails/motherconfirmation.html.twig', [
                                 'user' => $user
                                 ]);
@@ -170,7 +179,7 @@ class AccountController extends AbstractController
                 }else{
 
             
-                    /* selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
+                     /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
                 $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
                 $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
                 $user = $this->getUser();
@@ -188,9 +197,9 @@ class AccountController extends AbstractController
                         
                 
                 
-                $manager->flush();
                 $manager->persist($roleAdded);
                 $manager->persist($wristletAdded);
+                $manager->flush();
 
                 $this->addFlash(
                     'success',
