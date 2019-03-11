@@ -16,7 +16,7 @@ class SerialNumberType extends ApplicationType
     {
         $builder
             ->add('serialWristlet', NumberType::class, $this->getConfiguration("Numéro de série d'un bracelet", "Veuillez rentrer le numéro de série du bracelet"))
-            ->add('wristletTitle',TextType::class,$this->getConfiguration("Nom du bracelet", "Veuillez donner un nom au bracelet"))
+           
         ;
     }
 

@@ -141,16 +141,50 @@ class AccountController extends AbstractController
             /*recuperation des données entré dans le form et de l'utilisateur qui la soumis*/
                 $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
                 $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
-                $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
+                /*$numberBdd->setWristletTitle($form->get('wristletTitle')->getData());*/
+
                 $user = $this->getUser();
+
+                $requested = $this->getDoctrine()
+                            ->getRepository(Requested::class)
+                            ->findBy(array('requestedBy' => $user, 'requestedFor' => $numberBdd));
+                           
+                
+                            
+           /*Vérification si le bracelet demandé n'a pas déjà été validé*/
+            if($numberBdd->getActive() === null){            
+                
                 
 
-            /*vérification si l'utilisateur n'a pas déjà une demande en attente
-            if($user->getTokenChildRequest() === !null){*/
+                 /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
+                 $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
+                 $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
+                 $user = $this->getUser();
+                 
+                 $userMail = $user->getEmail();
+                 
+                 $roleAdded->addUser($user);
+                 
+                 $numberBdd->setActive(true);
 
-                /*Vérification si le bracelet demandé n'a pas déjà été validé*/
-                if ($numberBdd->getActive() === !null )
-                {
+                 $wristletAdded = $numberBdd;
+                 $wristletAdded->addUserNumber($user);
+                 $wristletAdded->setMailMother($userMail);
+                 
+                 $manager->persist($roleAdded);
+                 $manager->persist($wristletAdded);
+                 $manager->flush();
+
+                 $this->addFlash(
+                     'success',
+                     "Compte lier, veuillez vous identifier a nouveau."
+                 );
+                
+                
+                }
+                 /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
+                if($requested == null && ($numberBdd->getMailMother() !== $user->getEmail())){
+                
                     $requested = new Requested();
 
                     $requested->setRequestedToken($tokenGenerator->generateToken());
@@ -160,9 +194,7 @@ class AccountController extends AbstractController
                     $requested->setRequestedFor($numberBdd);
 
                     $requested->setRequestedBy($user);
-                    dump($requested);
-                    
-                    
+                                                            
                     $manager->persist($requested);
                     $manager->flush();
                     
@@ -170,54 +202,21 @@ class AccountController extends AbstractController
                                 'user' => $user
                                 ]);
                                 $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMailMother(), 'Demande de liaison a un de vos bracelet', $bodyMail);
-                                                            
-                    
+                                                        
                     $this->addFlash("warning", "Le bracelet a déjà été lier et nomé.Un mail de confirmation au compte principale a été envoyer.
-                    Vous devez attrendre la confirmation de la personne détenteur du compte principale.");
-                        
-                    
+                    Vous devez attrendre la confirmation de la personne détenteur du compte principale.");     
                 }else{
-
-            
-                     /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
-                $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
-                $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
-                $user = $this->getUser();
-                
-                $userMail = $user->getEmail();
-                
-                $roleAdded->addUser($user);
-                
-                $numberBdd->setActive(true);
-
-                $wristletAdded = $numberBdd;
-                $wristletAdded->addUserNumber($user);
-                $wristletAdded->setMailMother($userMail);
-                
-                        
-                
-                
-                $manager->persist($roleAdded);
-                $manager->persist($wristletAdded);
-                $manager->flush();
-
-                $this->addFlash(
-                    'success',
-                    "Compte lier, veuillez vous identifier a nouveau."
-                );
+                    $this->addFlash("warning","dude t'a déja demander waiting.");
                 }
-                return $this->redirectToRoute('account_login');
-            }else{
-
-                $this->addFlash("warning", "Vous avez déjà une demande en attente veuillez attendre, la validation de celle ci");
-                return $this->redirectToRoute('account_logged');   
-            }
             
-        }
-        
-        return $this->render('account/link.html.twig',[
-            'form' => $form->createView()]);
+                
+        };
+            
+            
+            return $this->render('account/link.html.twig',[
+                'form' => $form->createView()]);
     }
+    
      /**
      *Permet d'afficher les données de fréquance cardiaque d'un bracelet
      *
@@ -229,4 +228,4 @@ class AccountController extends AbstractController
     public function cardio(){
         return $this->render('account/cardiolist.html.twig');
     }
-}
+};
