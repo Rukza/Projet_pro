@@ -60,7 +60,7 @@ class ResettingController extends Controller
                         'form' => $form->createView()
                     ]);
     }
-     // si supérieur à 10min, retourne false
+     // si supérieur à 10 min, retourne false
     // sinon retourne false
     private function isRequestInTime(\Datetime $passwordRequestedAt = null)
     {
@@ -71,7 +71,7 @@ class ResettingController extends Controller
         
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
-        $daySeconds = 60 * 10;//to do passé a 24h la validation
+        $daySeconds = 60 * 10;//to do passé a 24h la validation *24
         $response = $interval > $daySeconds ? false : $reponse = true;
         return $response;
     }

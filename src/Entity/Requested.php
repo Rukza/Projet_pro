@@ -37,6 +37,10 @@ class Requested
      * @ORM\JoinColumn(nullable=false)
      */
     private $requestedBy;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $requestedRefused;
 
     public function getId(): ?int
     {
@@ -87,6 +91,18 @@ class Requested
     public function setRequestedBy(?User $requestedBy): self
     {
         $this->requestedBy = $requestedBy;
+
+        return $this;
+    }
+    
+    public function getRequestedRefused(): ?bool
+    {
+        return $this->requestedRefused;
+    }
+
+    public function setRequestedRefused(?bool $requestedRefused): self
+    {
+        $this->requestedRefused = $requestedRefused;
 
         return $this;
     }

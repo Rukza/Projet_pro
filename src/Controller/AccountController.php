@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
@@ -141,19 +142,18 @@ class AccountController extends AbstractController
             /*recuperation des données entré dans le form et de l'utilisateur qui la soumis*/
                 $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
                 $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
-                /*$numberBdd->setWristletTitle($form->get('wristletTitle')->getData());*/
+                
 
                 $user = $this->getUser();
 
                 $requested = $this->getDoctrine()
                             ->getRepository(Requested::class)
                             ->findBy(array('requestedBy' => $user, 'requestedFor' => $numberBdd));
-                           
-                
                             
            /*Vérification si le bracelet demandé n'a pas déjà été validé*/
-            if($numberBdd->getActive() === null){            
-                
+            if($numberBdd->getActive() === null){ 
+                           
+                $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
                 
 
                  /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
@@ -179,12 +179,13 @@ class AccountController extends AbstractController
                      'success',
                      "Compte lier, veuillez vous identifier a nouveau."
                  );
+                 return $this->redirectToRoute('account_logged');
+                                
+            }
                 
-                
-                }
                  /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
-                if($requested == null && ($numberBdd->getMailMother() !== $user->getEmail())){
-                
+            if($requested == null && ($numberBdd->getMailMother() !== $user->getEmail())){
+                 
                     $requested = new Requested();
 
                     $requested->setRequestedToken($tokenGenerator->generateToken());
@@ -199,33 +200,134 @@ class AccountController extends AbstractController
                     $manager->flush();
                     
                     $bodyMail = $contactMother->createBodyMail('emails/motherconfirmation.html.twig', [
-                                'user' => $user
-                                ]);
+                                'requested' => $requested,
+                                'user' => $user,
+                                'serialNumber' => $numberBdd
+                                ]
+                            );
                                 $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMailMother(), 'Demande de liaison a un de vos bracelet', $bodyMail);
                                                         
-                    $this->addFlash("warning", "Le bracelet a déjà été lier et nomé.Un mail de confirmation au compte principale a été envoyer.
-                    Vous devez attrendre la confirmation de la personne détenteur du compte principale.");     
-                }else{
+                    $this->addFlash("warning", "Le bracelet a déjà été lier et nommé.Un mail de confirmation au compte principale a été envoyer.
+                    Vous devez attrendre la confirmation de la personne détenteur du compte principale.");  
+
+                }else if($numberBdd->getMailMother() == $user->getEmail()){
+                    $this->addFlash("warning","dude t'est déja mother.");
+                   
+                }else if($requested[0]->getRequestedRefused() === true){
+                    $this->addFlash("warning","dude t'es ban.");     
+
+                }else if($requested !== null && $numberBdd->getMailMother() !== $user->getEmail()){
                     $this->addFlash("warning","dude t'a déja demander waiting.");
-                }
-            
+                
+                } 
+               
+                
                 
         };
             
-            
-            return $this->render('account/link.html.twig',[
-                'form' => $form->createView()]);
+        return $this->render('account/link.html.twig',[
+        'form' => $form->createView()]);
     }
     
-     /**
-     *Permet d'afficher les données de fréquance cardiaque d'un bracelet
-     *
-     * @Route("/account/cardiolist", name="account_cardio")
-     * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
-     * @return Response
-     */
 
-    public function cardio(){
-        return $this->render('account/cardiolist.html.twig');
-    }
+
+
+        /**
+         *Permet d'afficher les données de fréquance cardiaque d'un bracelet
+        *
+        * @Route("/account/cardiolist", name="account_cardio")
+        * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
+        * @return Response
+        */
+
+        public function cardio(){
+            return $this->render('account/cardiolist.html.twig');
+        }
+
+
+        /**
+         *Vérification de l'intervale de temps entre un demande est la validation par mail
+        */
+
+        private function requestedInTime(\Datetime $RequestedAt = null)
+        {
+            if ($RequestedAt === null)
+            {
+                return false;        
+            }
+            
+            $now = new \DateTime();
+            $interval = $now->getTimestamp() - $RequestedAt->getTimestamp();
+            $daySeconds = 60 * 10;//*24
+            $response = $interval > $daySeconds ? false : $reponse = true;
+            return $response;
+        }
+        /**
+         * @Route("account/motherconfirmation/{id}/{token}", name="mother_validate")
+         */
+        public function motherValidate(Requested $requested, $token, ObjectManager $manager)
+        {
+            // Récuperation de la bonne demande de liaison
+            // Récupération dans le tableau du User,Numéro et du token pour les opérations qui suivront
+            
+            $requested = $this->getDoctrine()
+            ->getRepository(Requested::class)
+            ->findByrequestedToken($token);
+            $user = $requested[0]->getRequestedBy();
+            $userSerial = $requested[0]->getRequestedFor();
+            $requestedAt = $requested[0]->getRequestedAt();
+            $requestedToken = $requested[0]->getRequestedToken();
+           
+            // interdit l'accès à la page si:
+            // le token associé au membre est null
+            // le token enregistré en base et le token présent dans l'url ne sont pas égaux
+            // le token date de plus de 10 minutes
+
+            if ($requestedToken === null || $token !== $requestedToken || !$this->requestedInTime($requestedAt))
+            {
+                throw new AccessDeniedHttpException();
+            }
+
+                 $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
+                 $roleAdded = $repositoryRole->findOneBytitle('ROLE_CHILD');
+                //Mise en relation du role et du numéro de série a lier
+                 $roleAdded->addUser($user);
+                 $userSerial->addUserNumber($user);
+                                              
+                 $manager->persist($roleAdded);
+                 $manager->persist($userSerial);
+                 //Suppression de la demande
+                 $manager->remove($requested[0]);
+                 $manager->flush();
+
+                 $this->addFlash(
+                     'success',
+                     "Compte lier."
+                 );
+                return $this->redirectToRoute('account_logged');
+
+                
+                return $this->render('motherconfimation.html.twig', [
+                    'form' => $form->createView()
+                    ]);
+        }
+
+        /**
+         * @Route("account/motherrefuse/{id}/{token}", name="mother_refuse")
+         */
+        public function motherRefuse(Requested $requested, $token, ObjectManager $manager)
+        {
+            $requested = $this->getDoctrine()
+            ->getRepository(Requested::class)
+            ->findByrequestedToken($token);
+            $requestedRefused = $requested[0]->setRequestedRefused("true");
+            $manager->persist($requestedRefused);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "Demande refusé."
+            );
+           return $this->redirectToRoute('account_logged');
+
+        }
 };

@@ -11472,7 +11472,11 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-
+#container {
+  min-width: 310px;
+  height: 400px;
+  margin: 0 auto;
+}
 /*==========================footer1===========================*/
 .footer1 {
   padding-top: 60px;
