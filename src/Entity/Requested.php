@@ -17,12 +17,12 @@ class Requested
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $requestedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $requestedToken;
 
@@ -47,24 +47,24 @@ class Requested
         return $this->id;
     }
 
-    public function getRequestedAt(): ?\DateTimeInterface
+    public function getRequestedAt()
     {
         return $this->requestedAt;
     }
 
-    public function setRequestedAt(\DateTimeInterface $requestedAt): self
+    public function setRequestedAt($requestedAt)
     {
         $this->requestedAt = $requestedAt;
 
         return $this;
     }
 
-    public function getRequestedToken(): ?string
+    public function getRequestedToken()
     {
         return $this->requestedToken;
     }
 
-    public function setRequestedToken(string $requestedToken): self
+    public function setRequestedToken($requestedToken)
     {
         $this->requestedToken = $requestedToken;
 

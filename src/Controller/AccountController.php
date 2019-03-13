@@ -265,7 +265,7 @@ class AccountController extends AbstractController
         /**
          * @Route("account/motherconfirmation/{id}/{token}", name="mother_validate")
          */
-        public function motherValidate(Requested $requested, $token, ObjectManager $manager)
+        public function motherValidate(Requested $requested, $token, ObjectManager $manager,Mailer $motherValidate)
         {
             // Récuperation de la bonne demande de liaison
             // Récupération dans le tableau du User,Numéro et du token pour les opérations qui suivront
@@ -297,6 +297,15 @@ class AccountController extends AbstractController
                  $manager->persist($roleAdded);
                  $manager->persist($userSerial);
                  //Suppression de la demande
+
+                  $bodyMail = $motherValidate->createBodyMail('emails/mothervalidate.html.twig', [
+                    'user' => $user,
+                    'serialNumber' => $userSerial
+                    ]
+                ); 
+                
+                    $motherValidate->sendMessage('noreply@wristband.com', $user->getEmail(), 'Acceptation de la demande de liaison', $bodyMail);
+                      
                  $manager->remove($requested[0]);
                  $manager->flush();
 
@@ -304,6 +313,8 @@ class AccountController extends AbstractController
                      'success',
                      "Compte lier."
                  );
+
+                
                 return $this->redirectToRoute('account_logged');
 
                 
@@ -315,18 +326,31 @@ class AccountController extends AbstractController
         /**
          * @Route("account/motherrefuse/{id}/{token}", name="mother_refuse")
          */
-        public function motherRefuse(Requested $requested, $token, ObjectManager $manager)
+        public function motherRefuse($token, ObjectManager $manager,Mailer $motherRefuse)
         {
             $requested = $this->getDoctrine()
             ->getRepository(Requested::class)
             ->findByrequestedToken($token);
-            $requestedRefused = $requested[0]->setRequestedRefused("true");
+            $user = $requested[0]->getRequestedBy();
+            $userSerial = $requested[0]->getRequestedFor();
+            $requestedRefused = $requested[0]->setRequestedRefused(true);
+            $requestedRefused = $requested[0]->setRequestedAt(Null);
+            $requestedRefused = $requested[0]->setRequestedToken(Null);
             $manager->persist($requestedRefused);
             $manager->flush();
             $this->addFlash(
                 'success',
                 "Demande refusé."
             );
+
+            $bodyMail = $motherRefuse->createBodyMail('emails/motherrefuse.html.twig', [
+                'user' => $user,
+                'serialNumber' => $userSerial
+                ]
+            ); 
+            
+                $motherRefuse->sendMessage('noreply@wristband.com', $user->getEmail(), 'Refus de la demande de liaison', $bodyMail);
+               
            return $this->redirectToRoute('account_logged');
 
         }
