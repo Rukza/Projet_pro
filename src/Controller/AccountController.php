@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -124,7 +125,7 @@ class AccountController extends AbstractController
     
     
     /**
-     *Permet d'afficher et de lier un bracelet au compte
+     *Permet d'afficher le formulaire pour lier un bracelet au compte
      *
      * @Route("/account/link", name="account_link")
      * @IsGranted("ROLE_USER")
@@ -229,20 +230,6 @@ class AccountController extends AbstractController
         'form' => $form->createView()]);
     }
     
-
-
-
-        /**
-         *Permet d'afficher les données de fréquance cardiaque d'un bracelet
-        *
-        * @Route("/account/cardiolist", name="account_cardio")
-        * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
-        * @return Response
-        */
-
-        public function cardio(){
-            return $this->render('account/cardiolist.html.twig');
-        }
 
 
         /**

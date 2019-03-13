@@ -11477,6 +11477,12 @@ a.text-dark:focus {
   height: 400px;
   margin: 0 auto;
 }
+.highcharts-credits{
+  visibility: hidden;
+}
+.highcharts-title{
+  visibility: hidden;
+}
 /*==========================footer1===========================*/
 .footer1 {
   padding-top: 60px;
