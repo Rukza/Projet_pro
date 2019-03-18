@@ -17,6 +17,11 @@ class Requested
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $requestedName;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $requestedAt;
@@ -55,6 +60,18 @@ class Requested
     public function setRequestedAt($requestedAt)
     {
         $this->requestedAt = $requestedAt;
+
+        return $this;
+    }
+
+    public function getRequestedName(): ?string
+    {
+        return $this->requestedName;
+    }
+
+    public function setRequestedName(string $requestedName): self
+    {
+        $this->requestedName = $requestedName;
 
         return $this;
     }
@@ -105,5 +122,8 @@ class Requested
         $this->requestedRefused = $requestedRefused;
 
         return $this;
+    }
+    public function __toString(){
+        return $this->requestedName;
     }
 }

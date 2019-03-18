@@ -6,7 +6,7 @@
 <div class="container text-center">
   <h1 class="my-5">Profile de {{app.user.FullName}}</h1>
   <div class="row">
-    <div class="col-md-12 mt-3">
+    <div class="col-md-12 mt-5">
       <div class="jumbotron bg-light">
         <h4>Les bracelets lier a votre compte</h4>
         <hr>
@@ -15,9 +15,12 @@
         <p>
           <a href="{{path('wristlet', {'id': SerialNumber.id}) }}" class="btn btn-info">Plus
             d'informations</a>
-          <br>
         </p>
         {% endfor %}
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
 

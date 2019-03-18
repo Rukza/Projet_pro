@@ -22,15 +22,12 @@ class CardioController extends AbstractController
         *Permet d'afficher les bracelets lier a ce compte
         *
         * @Route("/account/cardiolist", name="account_cardio")
-        * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
+        * @Security("is_granted('ROLE_USER')")
         * @return Response
         */
 
         public function cardio( ObjectManager $manager,SerialNumberRepository $repo ){
-            
-
-           $usern = $repo->findAll();
-
+          
             return $this->render('account/cardiolist.html.twig');
         }
 

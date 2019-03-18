@@ -83,7 +83,7 @@ class User implements UserInterface
     private $userRoles;
 
     /**
-	 * @ORM\Column(type="boolean")
+	 * @ORM\Column(type="boolean", nullable=true)
 	 */
     private $active;
 
@@ -248,17 +248,17 @@ class User implements UserInterface
             return $this;
         }
 
-        public function getActive(): ?int
-        {
-            return $this->active;
-        }
+        public function getActive(): ?bool
+    {
+        return $this->active;
+    }
 
-        public function setActive(int $active): self
-        {
-            $this->active = $active;
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
 
-            return $this;
-        }
+        return $this;
+    }
 
         /**
          * @return Collection|SerialNumber[]
@@ -317,5 +317,8 @@ class User implements UserInterface
             }
 
             return $this;
+        }
+        public function __toString(){
+            return $this->firstName;
         }
 }

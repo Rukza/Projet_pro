@@ -1,0 +1,10 @@
+easy_admin:
+  site_name: 'K.I.S <em style="font-size:80%">Administrations</em>'
+
+  user:
+      display_name: true
+      name_property_path: 'fullName'
+  design:
+      menu:
+        - { entity: 'User', icon: 'user' }
+        - { entity: 'SerialNumber', icon: 'microchip' }

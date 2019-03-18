@@ -1,0 +1,17 @@
+easy_admin:
+  entities:
+    SerialNumber:
+          class: App\Entity\SerialNumber
+          label: 'Numéros de série des bracelets'
+          list:
+            title: "Listes des bracelets"
+            fields:
+                - id
+                - { property: 'serialWristlet', label: 'Numéro_de_série' }
+                - { property: 'active', label: 'Bracelet activé' }
+                - { property: 'mailMother', label: 'Email du compte mère' }
+                - { property: 'requesteds', label: 'Nombres de requêtes en cour' }
+            actions:
+                - {name: 'edit', icon: 'pencil', label: 'Modifier', css_class: 'btn btn-secondary'}
+                - {name: 'delete', icon: 'trash', label: 'Supprimer', css_class: 'btn btn-danger'}
+                - {name: 'new', icon: 'plus-circle', label: 'Ajouter un numéro de série', css_class: 'btn btn-primary'}

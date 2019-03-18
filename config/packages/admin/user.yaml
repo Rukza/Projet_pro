@@ -1,0 +1,18 @@
+easy_admin:
+  entities:
+      User:
+          class: App\Entity\User
+          label: 'Utilisateurs'
+          list:
+            title: "Listes des utilisateurs"
+            fields:
+                - id
+                - { property: 'firstName', label: 'Nom' }
+                - { property: 'lastName', label: 'Prénom' }
+                - { property: 'email', label: 'Email' }
+                - { property: 'active', label: 'Compte activé'}
+            actions:
+                - {name: 'edit', icon: 'pencil', label: 'Modifier', css_class: 'btn btn-secondary'}
+                - {name: 'delete', icon: 'trash', label: 'Supprimer', css_class: 'btn btn-danger'}
+                - {name: 'new', icon: 'plus-circle', label: 'Ajouter un utilisateur', css_class: 'btn btn-primary'}
+ 

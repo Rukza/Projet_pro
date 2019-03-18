@@ -24,7 +24,7 @@ class SerialNumber
     private $serialWristlet;
 
      /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $wristletTitle;
 
@@ -165,5 +165,8 @@ class SerialNumber
         }
 
         return $this;
+    }
+    public function __toString(){
+        return $this->wristletTitle;
     }
 }
