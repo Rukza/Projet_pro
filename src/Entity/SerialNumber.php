@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SerialNumberRepository")
@@ -24,7 +25,7 @@ class SerialNumber
     private $serialWristlet;
 
      /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $wristletTitle;
 
@@ -34,25 +35,27 @@ class SerialNumber
     private $active;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mailMother;
-
-     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userSerialNumber")
-     */
-    private $userNumber;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Requested", mappedBy="requestedFor", orphanRemoval=true)
      */
     private $requesteds;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="MotherFor")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $Mother;
+
+    /**
+    * 
+    * @Assert\NotBlank()
+    * 
+    */
+    public $checkConsent;
 
 
     public function __construct()
     {
-        $this->userNumber = new ArrayCollection();
+        
         $this->requesteds = new ArrayCollection();
     }
 
@@ -98,44 +101,6 @@ class SerialNumber
         return $this;
     }
 
-    public function getMailMother(): ?string
-    {
-        return $this->mailMother;
-    }
-
-    public function setMailMother(string $mailMother): self
-    {
-        $this->mailMother = $mailMother;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUserNumber(): Collection
-    {
-        return $this->userNumber;
-    }
-
-    public function addUserNumber(User $userNumber): self
-    {
-        if (!$this->userNumber->contains($userNumber)) {
-            $this->userNumber[] = $userNumber;
-        }
-
-        return $this;
-    }
-
-    public function removeUserNumber(User $userNumber): self
-    {
-        if ($this->userNumber->contains($userNumber)) {
-            $this->userNumber->removeElement($userNumber);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Requested[]
      */
@@ -168,5 +133,17 @@ class SerialNumber
     }
     public function __toString(){
         return $this->wristletTitle;
+    }
+
+    public function getMother(): ?User
+    {
+        return $this->Mother;
+    }
+
+    public function setMother(?User $Mother): self
+    {
+        $this->Mother = $Mother;
+
+        return $this;
     }
 }

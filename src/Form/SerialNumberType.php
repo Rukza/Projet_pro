@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class SerialNumberType extends ApplicationType
 {
@@ -16,7 +17,7 @@ class SerialNumberType extends ApplicationType
     {
         $builder
             ->add('serialWristlet', NumberType::class, $this->getConfiguration("Numéro de série d'un bracelet", "Veuillez rentrer le numéro de série du bracelet"))
-            ->add('wristletTitle',TextType::class, $this->getConfiguration("Nom du bracelet", "Veuillez nomer le bracelet"))
+            ->add('checkConsent',CheckboxType::class,$this->getConfiguration("J'accepte que mes données personnelle puissent être transmit a l'ayant droit du bracelet au qu'elle je souhaites faire une demande de liaison.", " ", array()))
         ;
     }
 

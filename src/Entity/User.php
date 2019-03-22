@@ -88,21 +88,21 @@ class User implements UserInterface
     private $active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\SerialNumber", mappedBy="userNumber")
-     */
-    private $userSerialNumber;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Requested", mappedBy="requestedBy", orphanRemoval=true)
      */
     private $requestedUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SerialNumber", mappedBy="Mother", orphanRemoval=true)
+     */
+    private $MotherFor;
 
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
         $this->active = false;
-        $this->userSerialNumber = new ArrayCollection();
         $this->requestedUsers = new ArrayCollection();
+        $this->MotherFor = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -260,34 +260,7 @@ class User implements UserInterface
         return $this;
     }
 
-        /**
-         * @return Collection|SerialNumber[]
-         */
-        public function getUserSerialNumber(): Collection
-        {
-            return $this->userSerialNumber;
-        }
-
-        public function addUserSerialNumber(SerialNumber $userSerialNumber): self
-        {
-            if (!$this->userSerialNumber->contains($userSerialNumber)) {
-                $this->userSerialNumber[] = $userSerialNumber;
-                $userSerialNumber->addUserNumber($this);
-            }
-
-            return $this;
-        }
-
-        public function removeUserSerialNumber(SerialNumber $userSerialNumber): self
-        {
-            if ($this->userSerialNumber->contains($userSerialNumber)) {
-                $this->userSerialNumber->removeElement($userSerialNumber);
-                $userSerialNumber->removeUserNumber($this);
-            }
-
-            return $this;
-        }
-
+        
         /**
          * @return Collection|Requested[]
          */
@@ -320,5 +293,36 @@ class User implements UserInterface
         }
         public function __toString(){
             return $this->firstName;
+        }
+
+        /**
+         * @return Collection|SerialNumber[]
+         */
+        public function getMotherFor(): Collection
+        {
+            return $this->MotherFor;
+        }
+
+        public function addMotherFor(SerialNumber $motherFor): self
+        {
+            if (!$this->MotherFor->contains($motherFor)) {
+                $this->MotherFor[] = $motherFor;
+                $motherFor->setMother($this);
+            }
+
+            return $this;
+        }
+
+        public function removeMotherFor(SerialNumber $motherFor): self
+        {
+            if ($this->MotherFor->contains($motherFor)) {
+                $this->MotherFor->removeElement($motherFor);
+                // set the owning side to null (unless already changed)
+                if ($motherFor->getMother() === $this) {
+                    $motherFor->setMother(null);
+                }
+            }
+
+            return $this;
         }
 }

@@ -51,39 +51,34 @@ class WristletLinkController extends AbstractController
            /*Vérification si le bracelet demandé n'a pas déjà été validé*/
             if($numberBdd->getActive() === null){ 
                            
-                $numberBdd->setWristletTitle($form->get('wristletTitle')->getData());
-                
-
                  /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
                  $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
                  $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
                  $user = $this->getUser();
-                 
-                 $userMail = $user->getEmail();
+                 $user->addMotherFor($numberBdd);                 
                  
                  $roleAdded->addUser($user);
-                 
                  $numberBdd->setActive(true);
-
-                 $wristletAdded = $numberBdd;
-                 $wristletAdded->addUserNumber($user);
-                 $wristletAdded->setMailMother($userMail);
                  
+                 //$numberBdd->setMother($user);
+                        
                  $manager->persist($roleAdded);
-                 $manager->persist($wristletAdded);
+                 $manager->persist($numberBdd);
                  $manager->flush();
 
                  $this->addFlash(
                      'success',
-                     "Compte lier, veuillez vous identifier a nouveau."
+                     "Compte lier, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter a nouveau."
                  );
-                 return $this->redirectToRoute('account_logged');
+                 
+                 return $this->redirectToRoute('account_login');
                                 
             }
-                
+            $numberBdd->getMother()->getEmail();
+            
                  /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
-            if($requested == null && ($numberBdd->getMailMother() !== $user->getEmail())){
-                 
+            if($requested == null && ($numberBdd->getMother() !== $user = $this->getUser())){
+               
                     $requested = new Requested();
 
                     $requested->setRequestedToken($tokenGenerator->generateToken());
@@ -93,7 +88,7 @@ class WristletLinkController extends AbstractController
                     $requested->setRequestedFor($numberBdd);
 
                     $requested->setRequestedBy($user);
-                                                            
+                                            
                     $manager->persist($requested);
                     $manager->flush();
                     
@@ -103,18 +98,19 @@ class WristletLinkController extends AbstractController
                                 'serialNumber' => $numberBdd
                                 ]
                             );
-                                $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMailMother(), 'Demande de liaison a un de vos bracelet', $bodyMail);
+                            
+                                $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMother()->getEmail(), 'Demande de liaison a un de vos bracelet', $bodyMail);
                                                         
                     $this->addFlash("warning", "Le bracelet a déjà été lier et nommé.Un mail de confirmation au compte principale a été envoyer.
                     Vous devez attrendre la confirmation de la personne détenteur du compte principale.");  
-
-                }else if($numberBdd->getMailMother() == $user->getEmail()){
+                      
+                }else if($numberBdd->getMother() == $user = $this->getUser()){
                     $this->addFlash("warning","dude t'est déja mother.");
                    
                 }else if($requested[0]->getRequestedRefused() === true){
                     $this->addFlash("warning","dude t'es ban.");     
 
-                }else if($requested !== null && $numberBdd->getMailMother() !== $user->getEmail()){
+                }else if($requested !== null && $numberBdd->getMother() !== $user = $this->getUser()){
                     $this->addFlash("warning","dude t'a déja demander waiting.");
                 
                 } 
@@ -238,4 +234,32 @@ class WristletLinkController extends AbstractController
            return $this->redirectToRoute('account_login');
 
         }
+        /**
+         * @Route("/admingen", name="GenSerial") 
+         * @IsGranted("ROLE_ADMIN")
+         */
+
+
+        //Generate cryptographied number 
+
+        function serialRand(ObjectManager $manager, $longueur = 15, $listeCar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        {
+            $newNumber = new SerialNumber;
+            $chaine = '';
+            $max = mb_strlen($listeCar, '8bit') - 1;
+            for ($i = 0; $i < $longueur; ++$i) {
+                $chaine .= $listeCar[random_int(0, $max)];
+            }
+            
+            $newNumber->setSerialWristlet($chaine);
+                         
+            $manager->persist($newNumber);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "Un nouveau numéro de serie a bien été crée {$newNumber->getSerialWristlet()}"
+            );
+            return $this->redirectToRoute('account_logged');
+        }
+
 }

@@ -15,7 +15,8 @@
                 <br>
                 <a href="{{ path('account_updatepswd') }}">Modfier votre mot de passe</a>
                 <br>
-                <br>
+                
+               
                 <br>
 
                 <h4>Acceder au fonction du bracelet</h4>
@@ -24,6 +25,15 @@
                 <a href="{{ path('account_link') }}">Gérer les bracelet du compte</a>
                 <br>
                 <a href="{{ path('account_cardio') }}">Voir les bracelets lier au compte</a>
+<br>
+                 {% if is_granted('ROLE_ADMIN') %}
+                <hr>
+                <h4>Génération de code de bracelet</h4>
+<br>
+                <a href="{{ path('GenSerial') }}" class="btn btn-primary">Générer un nouveau numéro de série</a>
+                
+                
+              {% endif %}
             </div>
         </div>
 

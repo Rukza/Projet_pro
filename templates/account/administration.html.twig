@@ -8,14 +8,13 @@
   <div class="row">
     <div class="col-md-12 mt-5">
       <div class="jumbotron bg-light">
-        <h4>Les bracelets lier a votre compte</h4>
+        <h4>Les bracelets lier que vous pouvez administrer</h4>
         <hr>
-        {% for SerialNumber in app.user.motherFor %}
-        <h4>Bracelet : {{SerialNumber.wristletTitle}}</h4>
-        <p>
-          <a href="{{path('wristlet', {'id': SerialNumber.id}) }}" class="btn btn-info">Plus
-            d'informations</a>
-        </p>
+        {% for User in app.user.userSerialNumber %}
+        <h4>Bracelet : {{User.wristletTitle}}</h4>
+        
+        
+        
         {% endfor %}
         <br>
         <br>

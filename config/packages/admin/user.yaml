@@ -5,6 +5,7 @@ easy_admin:
           label: 'Utilisateurs'
           list:
             title: "Listes des utilisateurs"
+            form:
             fields:
                 - id
                 - { property: 'firstName', label: 'Nom' }
