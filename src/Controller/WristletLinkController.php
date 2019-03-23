@@ -3,19 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Role;
-use App\Entity\User;
 use App\Entity\Requested;
 use App\Entity\SerialNumber;
 use App\Notification\Mailer;
 use App\Form\SerialNumberType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+
+
 
 class WristletLinkController extends AbstractController
 {
@@ -107,7 +106,7 @@ class WristletLinkController extends AbstractController
                 }else if($numberBdd->getMother() == $user = $this->getUser()){
                     $this->addFlash("warning","dude t'est déja mother.");
                    
-                }else if($requested[0]->getRequestedRefused() === true){
+                }else if($requested[0]->getRequestedBanned() === true){
                     $this->addFlash("warning","dude t'es ban.");     
 
                 }else if($requested !== null && $numberBdd->getMother() !== $user = $this->getUser()){
@@ -125,122 +124,14 @@ class WristletLinkController extends AbstractController
     
 
 
-        /**
-         *Vérification de l'intervale de temps entre un demande est la validation par mail
-        */
-
-        private function requestedInTime(\Datetime $RequestedAt = null)
-        {
-            if ($RequestedAt === null)
-            {
-                return false;        
-            }
-            
-            $now = new \DateTime();
-            $interval = $now->getTimestamp() - $RequestedAt->getTimestamp();
-            $daySeconds = 60 * 10;//*24
-            $response = $interval > $daySeconds ? false : $reponse = true;
-            return $response;
-        }
-        /**
-         * @Route("account/motherconfirmation/{id}/{token}", name="mother_validate")
-         */
-        public function motherValidate(Requested $requested, $token, ObjectManager $manager,Mailer $motherValidate)
-        {
-            // Récuperation de la bonne demande de liaison
-            // Récupération dans le tableau du User,Numéro et du token pour les opérations qui suivront
-            
-            $requested = $this->getDoctrine()
-            ->getRepository(Requested::class)
-            ->findByrequestedToken($token);
-            $user = $requested[0]->getRequestedBy();
-            $userSerial = $requested[0]->getRequestedFor();
-            $requestedAt = $requested[0]->getRequestedAt();
-            $requestedToken = $requested[0]->getRequestedToken();
-           
-            // interdit l'accès à la page si:
-            // le token associé au membre est null
-            // le token enregistré en base et le token présent dans l'url ne sont pas égaux
-            // le token date de plus de 10 minutes
-
-            if ($requestedToken === null || $token !== $requestedToken || !$this->requestedInTime($requestedAt))
-            {
-                throw new AccessDeniedHttpException();
-            }
-
-                 $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
-                 $roleAdded = $repositoryRole->findOneBytitle('ROLE_CHILD');
-                //Mise en relation du role et du numéro de série a lier
-                 $roleAdded->addUser($user);
-                 $userSerial->addUserNumber($user);
-                                              
-                 $manager->persist($roleAdded);
-                 $manager->persist($userSerial);
-                 //Suppression de la demande
-
-                  $bodyMail = $motherValidate->createBodyMail('emails/mothervalidate.html.twig', [
-                    'user' => $user,
-                    'serialNumber' => $userSerial
-                    ]
-                ); 
-                
-                    $motherValidate->sendMessage('noreply@wristband.com', $user->getEmail(), 'Acceptation de la demande de liaison', $bodyMail);
-                      
-                 $manager->remove($requested[0]);
-                 $manager->flush();
-
-                 $this->addFlash(
-                     'success',
-                     "Compte lier."
-                 );
-
-                
-                return $this->redirectToRoute('account_login');
-
-                
-                return $this->render('motherconfimation.html.twig', [
-                    'form' => $form->createView()
-                    ]);
-        }
-
-        /**
-         * @Route("account/motherrefuse/{id}/{token}", name="mother_refuse")
-         */
-        public function motherRefuse($token, ObjectManager $manager,Mailer $motherRefuse)
-        {
-            $requested = $this->getDoctrine()
-            ->getRepository(Requested::class)
-            ->findByrequestedToken($token);
-            $user = $requested[0]->getRequestedBy();
-            $userSerial = $requested[0]->getRequestedFor();
-            $requestedRefused = $requested[0]->setRequestedRefused(true);
-            $requestedRefused = $requested[0]->setRequestedAt(Null);
-            $requestedRefused = $requested[0]->setRequestedToken(Null);
-            $manager->persist($requestedRefused);
-            $manager->flush();
-            $this->addFlash(
-                'success',
-                "Demande refusé."
-            );
-
-            $bodyMail = $motherRefuse->createBodyMail('emails/motherrefuse.html.twig', [
-                'user' => $user,
-                'serialNumber' => $userSerial
-                ]
-            ); 
-            
-                $motherRefuse->sendMessage('noreply@wristband.com', $user->getEmail(), 'Refus de la demande de liaison', $bodyMail);
-               
-           return $this->redirectToRoute('account_login');
-
-        }
+       
         /**
          * @Route("/admingen", name="GenSerial") 
          * @IsGranted("ROLE_ADMIN")
          */
 
 
-        //Generate cryptographied number 
+        //Generate cryptographied number to do in admin controller
 
         function serialRand(ObjectManager $manager, $longueur = 15, $listeCar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
         {

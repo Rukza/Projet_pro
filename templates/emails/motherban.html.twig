@@ -115,7 +115,7 @@
                                     </tr>
 
                                     <tr>
-                                       <td style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                        <td style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                             <p style="border-top:solid 4px #F45E43;font-size:1;margin:0px auto;width:100%;">
                                             </p>
 
@@ -128,20 +128,17 @@
                                     </tr>
                         <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                             <div style="font-family:helvetica;font-size:20px;line-height:1;text-align:left;color:#F45E43;">
-                                Sujet : Demande de liaison avec un bracelet dont vous étes le référent</div>
+                                Sujet : Réponse de la demande de liaison pour le bracelet
+                                {{serialNumber.wristletTitle}}</div>
                         </td>
                     </tr>
                     <tr>
                         <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                             <div style="font-family:helvetica;font-size:20px;line-height:1;text-align:left;color:#F45E43;">
                                 <p>
-                                                    Bonjour, <br>Une demande
-                                                    de {{user.email}}, pour lier son compte avec le bracelet {{serialNumber.wristletTitle}}.
-                                                    Cliquez sur le premier lien pour valider cette demande ou sur le second lien pour la refuser.
-                                                    <a href="{{absolute_url(path('mother_response', {'id':requested.id, 'token': requested.requestedToken}))}}">Autoriser la liaison</a>
-                                                </p>
-                                                
-
+                                    Bonjour, <br>votre demande de liaison avec le bracelet
+                                    {{serialNumber.wristletTitle}}, a été refusé et bloqué, vous ne pourrez plus faire de demande pour ce bracelet.
+                                    
                             </div>
                         </td>
                     </tr>
@@ -158,7 +155,3 @@
 </body>
 
 </html>
-
-
-
- 

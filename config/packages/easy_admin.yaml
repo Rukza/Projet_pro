@@ -1,7 +1,0 @@
-# config/packages/easy_admin.yaml
-
-imports :
-        - {resource: admin/}
-
- 
- 

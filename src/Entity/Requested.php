@@ -19,7 +19,7 @@ class Requested
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $requestedName;
+    private $requestedMotherResponse;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -45,7 +45,16 @@ class Requested
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
+    private $requestedAccepted;
+     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
     private $requestedRefused;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $requestedBanned;
+
 
     public function getId(): ?int
     {
@@ -64,14 +73,14 @@ class Requested
         return $this;
     }
 
-    public function getRequestedName(): ?string
+    public function getRequestedMotherResponse(): ?string
     {
-        return $this->requestedName;
+        return $this->requestedMotherResponse;
     }
 
-    public function setRequestedName(string $requestedName): self
+    public function setRequestedMotherResponse(string $requestedMotherResponse): self
     {
-        $this->requestedName = $requestedName;
+        $this->requestedMotherResponse = $requestedMotherResponse;
 
         return $this;
     }
@@ -111,7 +120,19 @@ class Requested
 
         return $this;
     }
-    
+
+    public function getRequestedAccepted(): ?bool
+    {
+        return $this->requestedAccepted;
+    }
+
+    public function setRequestedAccepted(?bool $requestedAccepted): self
+    {
+        $this->requestedAccepted = $requestedAccepted;
+
+        return $this;
+    }
+
     public function getRequestedRefused(): ?bool
     {
         return $this->requestedRefused;
@@ -123,7 +144,17 @@ class Requested
 
         return $this;
     }
-    public function __toString(){
-        return $this->requestedName;
+    
+    public function getRequestedBanned(): ?bool
+    {
+        return $this->requestedBanned;
     }
+
+    public function setRequestedBanned(?bool $requestedBanned): self
+    {
+        $this->requestedBanned = $requestedBanned;
+
+        return $this;
+    }
+   
 }
