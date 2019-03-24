@@ -120,37 +120,6 @@ class WristletLinkController extends AbstractController
             
         return $this->render('account/link.html.twig',[
         'form' => $form->createView()]);
-    }
-    
-
-
-       
-        /**
-         * @Route("/admingen", name="GenSerial") 
-         * @IsGranted("ROLE_ADMIN")
-         */
-
-
-        //Generate cryptographied number to do in admin controller
-
-        function serialRand(ObjectManager $manager, $longueur = 15, $listeCar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-        {
-            $newNumber = new SerialNumber;
-            $chaine = '';
-            $max = mb_strlen($listeCar, '8bit') - 1;
-            for ($i = 0; $i < $longueur; ++$i) {
-                $chaine .= $listeCar[random_int(0, $max)];
-            }
-            
-            $newNumber->setSerialWristlet($chaine);
-                         
-            $manager->persist($newNumber);
-            $manager->flush();
-            $this->addFlash(
-                'success',
-                "Un nouveau numéro de serie a bien été crée {$newNumber->getSerialWristlet()}"
-            );
-            return $this->redirectToRoute('account_logged');
-        }
+    }   
 
 }

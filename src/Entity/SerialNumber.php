@@ -25,7 +25,7 @@ class SerialNumber
     private $serialWristlet;
 
      /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $wristletTitle;
 
@@ -41,13 +41,13 @@ class SerialNumber
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="MotherFor")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $Mother;
 
     /**
     * 
-    * @Assert\NotBlank()
+    * @Assert\NotBlank(groups={"link"})
     * 
     */
     public $checkConsent;

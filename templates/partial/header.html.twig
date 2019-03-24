@@ -40,7 +40,7 @@
               <div class="dropdown-divider"></div>
               {% if is_granted('ROLE_ADMIN') %}
 
-              <a class="dropdown-item" href="{{'#'}}">Espace Super Admin</a>
+              <a class="dropdown-item" href="{{path('super_admin')}}">Espace Super Admin</a>
               <div class="dropdown-divider"></div>
               {% endif %}
 

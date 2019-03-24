@@ -1,0 +1,22 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Super Admin{% endblock %}
+{% block body %}
+
+<div class="container text-center">
+    <h1 class="my-5">Vous êtes connecter en Super Administrateur</h1>
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <div class="jumbotron bg-light">
+                <h2>Sur le compte {{user.email}}</h2>
+                <h3>de {{user.fullName}}</h3>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

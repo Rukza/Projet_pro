@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <h1 class="my-5">Gestion des bracelets</h1>
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numéro de série</th>
+                <th>Mail compte mère</th>
+                <th>Propriétaire</th>
+                <th>Bracelet nomé</th>
+                <th>Etat du compte</th>
+                <th><a href="{{ path('GenSerial') }}" class="btn btn-success"><i class="fas fa-plus-circle"></i> Bracelet</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for SerialNumber in wristlets %}
+            <tr>
+                <td>{{SerialNumber.id}}</td>
+                <td>{{SerialNumber.serialwristlet}}</td>
+                <td>{{SerialNumber.mother.email}}</td>
+                <td>{{SerialNumber.mother.fullName}}</td>
+
+                <td>{{SerialNumber.wristlettitle}}</td>
+                <td>{{SerialNumber.active}}</td>
+
+
+
+                <td>
+                    <a href="{{path('admin_wristlet_edit', {'id':SerialNumber.id})}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href=" {{path('admin_wristlet_delete', {'id':SerialNumber.id})}}" class="btn btn-danger"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

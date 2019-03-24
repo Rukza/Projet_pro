@@ -54,18 +54,16 @@ class MotherResponseController extends AbstractController
         $form = $this->createForm(RequestedType::class);
         $form->handleRequest($request);
         //$requestedToken = $requested[0]->getRequestedToken();
-        dump($requested);
-        //dump($requestedToken);
-        dump($token);
-        die;
+   
+        
         // interdit l'accès à la page si:
         // le token associé au membre est null
         // le token enregistré en base et le token présent dans l'url ne sont pas égaux
         // le token date de plus de 10 minutes
-        if($requestedToken === null || $token !== $requestedToken || !$this->requestedInTime($requestedAt))
+        /*if($requestedToken === null || $token !== $requestedToken || !$this->requestedInTime($requestedAt))
         {
         throw new AccessDeniedHttpException();
-        }else{
+        }else{*/
 
             //Si le btn refuser est choisie
             if($form->get('refuser')->isClicked() && $form->isValid())
@@ -160,5 +158,5 @@ class MotherResponseController extends AbstractController
             ]);
         }
     
-    }
+    
 }

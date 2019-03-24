@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+    {% include '/admin/partial/header.html.twig'%}
+
+    {% for label, messages in app.flashes %}
+    <div class="container mt-5">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+
+  
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    {% block javascripts %}{% endblock %}
+</body>
+
+</html>

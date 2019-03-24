@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification de l'utilisateur {% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="container">
+    <h1 class="my-5">Modification de l'utilisateur</h1>
+
+    {{form_start(form)}}
+
+    <div class="row">
+        <div class="col">
+            <div class="ard bg-light">
+                <div class="card-header">
+
+
+                </div>
+                <div class="card-body">
+                    {{form_widget(form)}}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i>
+                        Enregistrer les Modifications
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{form_end(form)}}
+    </div>
+
+    {% endblock %}
