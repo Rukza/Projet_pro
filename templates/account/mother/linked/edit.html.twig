@@ -1,0 +1,49 @@
+{% extends '/account/mother/base.html.twig' %}
+
+{% block title %}Modification d'une demande de liaison {% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="mt-5">Modification de la demande de liaison de <strong>{{requests.requestedBy}}</strong>
+    pour le bracelet <strong>{{requests.requestedFor}}</strong></h1>
+
+    {{form_start(form)}}
+
+    <div class="row ml-2 mr-2 mt-5 jumbotron bg-light">
+
+        <div class="col-md-4 ">
+
+            <h4 class="alert-heading">Acceptez la demande</h4>
+            <hr>
+            <br>
+            {{ form_row(form.accepter)}}
+        </div>
+        <div class="col-md-4 ">
+
+            <h4 class="alert-heading">Refuser la demande</h4>
+            <hr>
+            <br>
+
+            {{ form_row(form.refuser)}}
+
+
+        </div>
+
+        <div class="col-md-4">
+
+            <h4 class="alert-heading">Bloquer ce compte</h4>
+            <hr>
+            <br>
+
+            {{ form_row(form.bannir)}}
+
+
+        </div>
+    </div>
+
+    {{form_end(form)}}
+
+    {% endblock %}

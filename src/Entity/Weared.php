@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Webmozart\Assert\Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,13 +42,13 @@ class Weared
      */
     private $city;
 
-    
-
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\SerialNumber", inversedBy="wearedBy", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\SerialNumber", inversedBy="wearedBy", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $wearWristlet;
+
+    public $checkRgpd;
 
     public function getId(): ?int
     {

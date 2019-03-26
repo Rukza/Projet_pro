@@ -168,6 +168,7 @@ class SuperAdminController extends AbstractController
             }
             
             $newNumber->setSerialWristlet($chaine);
+            $newNumber->setAttributedTo(false);
             $newNumber->setWristletTitle("Undefine");
             $user = $this->getUser();
             $newNumber->setMother($user);
@@ -239,7 +240,7 @@ class SuperAdminController extends AbstractController
         ]);
     }
 
-/**
+    /**
      * Permet d'ajouter un utilisateur
      * 
      * @Route("/admin/requests/add", name="admin_requests_add")

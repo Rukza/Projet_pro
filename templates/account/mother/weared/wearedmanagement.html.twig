@@ -4,34 +4,40 @@
 {% block body %}
 <div class="container-fluid">
 
-    <h1 class="my-5">Gestion des utilisateurs de vos bracelets</h1>
+    <h1 class="my-5">Gestion des personnes portant vos bracelets</h1>
     <table class="table table-hover jumbotron bg-light">
 
         <thead>
             <tr>
+
                 <th>Nom du bracelet</th>
                 <th>Porteur</th>
-
                 <th>Adresse</th>
-
-                <th><a href="{{path ("mother_weared_add")}}" class="btn btn-success"><i class="fas fa-plus-circle"></i>
-                        Ajouter un porteur de bracelet</a></th>
-
+                <th>Code postal</th>
+                <th>Ville</th>
             </tr>
+                <div class="text-right mr-4">
+                 <a href="{{path ("mother_weared_add")}}" class="btn btn-success pull-right"><i class="fas fa-plus-circle"></i>
+                        Ajouter un porteur de bracelet</a>
+                </div>
+
         </thead>
-        <tbody>
+<tbody>
+       
             {% for wear in wears %}
 
             <tr>
+            
                 
                 <td>{{wear.wearWristlet}}</td>
                 <td>{{wear.fullName}}</td>
-                <td>{{wear.fullAdress}}</td>
-
-
-                <td>
-                    <a href="{{"#"}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                    <a href=" {{"#"}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                <td>{{wear.adress}}</td>
+                <td>{{wear.postalCode}}</td>
+                <td>{{wear.city}}</td>
+                <td><div class="text-center">
+                    <a href="{{path("mother_weared_edit", {'id':wear.id})}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href=" {{path("mother_weared_delete", {'id':wear.id})}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </div>
                 </td>
             </tr>
             {% endfor %}

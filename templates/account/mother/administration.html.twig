@@ -2,33 +2,55 @@
 {% block title %}Administration{% endblock %}
 {% block body %}
 
-<div class="container text-center">
-    <h1 class="my-5">Administration de {{app.user.FullName}}</h1>
+<div class="container-fluid mt-5">
+    <div class="card bg-light mb-5 text-center">
+        <h1>Administration du compte {{user.Email}}</h1>
+        <p>Bienvenue {{user.fullName}} sur votre section administration</p>
+        <p>ici vous pourrez gérer vos bracelets,
+            que se soit les personnes qui les portents, <br>
+            ou les personnes qui demandent a y avoir accès</p>
+    </div>
     <div class="row">
-        <div class="col-md-12 mt-3">
-            <div class="jumbotron bg-light">
-                <h4>Administrer les porteurs de vos bracelets</h4>
-                <hr>
 
-                <a href="{{path ('mother_weared_management')}}">Gerer les personnes portant vos bracelet</a>
-                <br>
-                <br>
+        <div class="col">
+            <div class="card bg-light mb-3 text-center">
+                <div class="card-header">
+                    <h4>Administrer les porteurs de vos bracelets</h4>
 
-                <h4>Administrer les liaisons de vos bracelets</h4>
-                <hr>
-                <a href="{{'#'}}">Gere les demandes de liaison</a>
-                <br>
-                <br>
-                
-             
+
+                </div>
+                <div class="card-body">
+                    <h5>Nombres de vos braclets : {{stats.numWristlets}}</h5>
+                    <hr>
+                    <h5>Nombres de vos bracelets pour lequel vous n'avez pas renseigné d'utilisateur : {{stats.numWears}}</h5>
+                    <hr>
+                    <a href="{{path ('mother_weared_management')}}" class="btn btn-primary">Personnes portant vos
+                        bracelets</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-light mb-3 text-center">
+                <div class="card-header">
+
+                    <h4>Administrer les liaisons de vos bracelets</h4>
+
+                </div>
+                <div class="card-body">
+                    <h5>Nombres de demande de liaison pour vos bracelets : {{stats.numRequests}}</h5>
+                    <hr>
+                    <h5>Vous avez : {{stats.numWaiting}} demande de liaison en attente, pensez a consulter votre boite mail</h5>
+                    <hr>
+                   
+                    <a href="{{path ('mother_linked_management')}}" class="btn btn-primary">Liaison de vos bracelets</a>
+
+
+                </div>
             </div>
         </div>
 
     </div>
-
 </div>
-
-
-
-
 {% endblock %}

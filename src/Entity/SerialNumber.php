@@ -57,6 +57,11 @@ class SerialNumber
      */
     private $wearedBy;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $attributedTo;
+
 
     public function __construct()
     {
@@ -165,6 +170,17 @@ class SerialNumber
         if ($this !== $wearedBy->getWearWristlet()) {
             $wearedBy->setWearWristlet($this);
         }
+
+        return $this;
+    }
+    public function getAttributedTo(): ?bool
+    {
+        return $this->attributedTo;
+    }
+
+    public function setAttributedTo(?bool $attributedTo): self
+    {
+        $this->attributedTo = $attributedTo;
 
         return $this;
     }
