@@ -27,11 +27,19 @@ class SuperAdminController extends AbstractController
      * @Route("/admin/index", name="super_admin")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function index()
+    public function index(ObjectManager $manager)
     {
-        $user = $this->getUser();
-        return $this->render('admin/index.html.twig',[
-            'user' => $user,
+        $users = $manager->createQuery('SELECT COUNT(u) FROM App\Entity\User u')->getSingleScalarResult();
+        $serials = $manager->createQuery('SELECT COUNT(s) FROM App\Entity\SerialNumber s')->getSingleScalarResult();
+        $requests = $manager->createQuery('SELECT COUNT(r) FROM App\Entity\Requested r')->getSingleScalarResult();
+        
+
+        return $this->render('/admin/index.html.twig',[
+            'stats' => [
+                'users' => $users,
+                'serials' => $serials,
+                'requests' => $requests,
+            ]
         ]);
     }
 

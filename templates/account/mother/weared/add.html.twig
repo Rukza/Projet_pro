@@ -1,0 +1,29 @@
+{% extends '/account/mother/base.html.twig' %}
+{% block title %}Ajouter un porteur de bracelet{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="container">
+    <h1 class="my-5">Ajouter un porteur de bracelet</h1>
+
+    {{form_start(form)}}
+
+    <div class="row">
+        <div class="col">
+            
+                
+                <div class="card-body bg-light">
+                    {{form_widget(form)}}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i>
+                        Enregistrer les Modifications
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{form_end(form)}}
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,34 @@
+{% extends '/account/mother/base.html.twig' %}
+{% block title %}Administration{% endblock %}
+{% block body %}
+
+<div class="container text-center">
+    <h1 class="my-5">Administration de {{app.user.FullName}}</h1>
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <div class="jumbotron bg-light">
+                <h4>Administrer les porteurs de vos bracelets</h4>
+                <hr>
+
+                <a href="{{path ('mother_weared_management')}}">Gerer les personnes portant vos bracelet</a>
+                <br>
+                <br>
+
+                <h4>Administrer les liaisons de vos bracelets</h4>
+                <hr>
+                <a href="{{'#'}}">Gere les demandes de liaison</a>
+                <br>
+                <br>
+                
+             
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

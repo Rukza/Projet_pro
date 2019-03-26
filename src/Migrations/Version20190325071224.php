@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190322112402 extends AbstractMigration
+final class Version20190325071224 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,10 +22,9 @@ final class Version20190322112402 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE serial_number ADD CONSTRAINT FK_D948EE2B78A354D FOREIGN KEY (mother_id) REFERENCES user (id)');
-        $this->addSql('CREATE INDEX IDX_D948EE2B78A354D ON serial_number (mother_id)');
-        $this->addSql('DROP INDEX IDX_8D93D6492043D998 ON user');
-        $this->addSql('ALTER TABLE user DROP mother_for_id');
+        $this->addSql('CREATE TABLE weared (id INT AUTO_INCREMENT NOT NULL, wear_wristlet_id INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, adresse VARCHAR(255) NOT NULL, postal_code VARCHAR(10) NOT NULL, city VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_708D721C862CC228 (wear_wristlet_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE weared ADD CONSTRAINT FK_708D721C862CC228 FOREIGN KEY (wear_wristlet_id) REFERENCES serial_number (id)');
+        $this->addSql('ALTER TABLE user DROP token_child_request');
     }
 
     public function down(Schema $schema) : void
@@ -33,9 +32,7 @@ final class Version20190322112402 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE serial_number DROP FOREIGN KEY FK_D948EE2B78A354D');
-        $this->addSql('DROP INDEX IDX_D948EE2B78A354D ON serial_number');
-        $this->addSql('ALTER TABLE user ADD mother_for_id INT DEFAULT NULL');
-        $this->addSql('CREATE INDEX IDX_8D93D6492043D998 ON user (mother_for_id)');
+        $this->addSql('DROP TABLE weared');
+        $this->addSql('ALTER TABLE user ADD token_child_request VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

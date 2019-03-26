@@ -21,20 +21,20 @@ class CardioController extends AbstractController
         /**
         *Permet d'afficher les bracelets lier a ce compte
         *
-        * @Route("/account/cardiolist", name="account_cardio")
+        * @Route("/account/cardio/cardiolist", name="account_cardio")
         * @Security("is_granted('ROLE_USER')")
         * @return Response
         */
 
         public function cardio( ObjectManager $manager,SerialNumberRepository $repo ){
           
-            return $this->render('account/cardiolist.html.twig');
+            return $this->render('account/cardio/cardiolist.html.twig');
         }
 
         /** 
          *Permet de voir les fréquences cardiaque d'un bracelet en particulier
          * 
-         * @Route("/account/cardiowristlet/{id}", name="wristlet")
+         * @Route("/account/cardio/cardiowristlet/{id}", name="wristlet")
          * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
          * @return Response
          */
@@ -44,7 +44,7 @@ class CardioController extends AbstractController
             
             $serial = $repo->findOneByid($id);
         
-            return $this->render('account/cardio.html.twig',[
+            return $this->render('account/cardio/cardio.html.twig',[
                 'serial' => $serial
             ]);
 

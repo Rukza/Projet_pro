@@ -7,6 +7,7 @@ use App\Entity\Requested;
 use App\Entity\SerialNumber;
 use App\Notification\Mailer;
 use App\Form\SerialNumberType;
+use App\Form\SerialNumberRenameType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ class WristletLinkController extends AbstractController
     /**
      *Permet d'afficher le formulaire pour lier un bracelet au compte
      *
-     * @Route("/account/link", name="account_link")
+     * @Route("/account/link/link", name="account_link")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
@@ -67,10 +68,12 @@ class WristletLinkController extends AbstractController
 
                  $this->addFlash(
                      'success',
-                     "Compte lier, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter a nouveau."
+                     "Compte lier, veuillez nomé le bracelet que vous venez de lier."
                  );
                  
-                 return $this->redirectToRoute('account_login');
+                 return $this->redirectToRoute('mother_wristlet_named',array(
+                     'id'=>$numberBdd->getId()
+                 ));
                                 
             }
             $numberBdd->getMother()->getEmail();
@@ -118,8 +121,44 @@ class WristletLinkController extends AbstractController
                 
         };
             
-        return $this->render('account/link.html.twig',[
+        return $this->render('account/link/link.html.twig',[
         'form' => $form->createView()]);
     }   
+    /**
+     * Permet de nomer un bracelet lier par un compte mother
+     *
+     * @Route ("/account/link/namewristlet/{id}", name="mother_wristlet_named")
+     * @IsGranted("ROLE_USER")
+     * @return Response
+     */
+    public function nameWristlet($id,SerialNumber $serials, ObjectManager $manager, Request $request){
+        $form = $this->createForm(SerialNumberRenameType::class,$serials);
+        $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
+        $numberBdd = $repository->findOneByid($id);
+                
+        
+        $form->handleRequest($request);
+        if($numberBdd->getMother() == $user = $this->getUser()){
 
+            if($form->isSubmitted()&& $form->isValid()){
+                $manager->persist($serials);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "le bracelet a bien été nomé, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter a nouveau."
+                );
+            }
+        }else{
+            $this->addFlash(
+                'warning',
+                "Il semblerait que le bracelet que vous tentez de renomer ne vous appartient pas!, merci de le laisser tranquille"
+            );
+            return $this->redirectToRoute('homepage');
+        }
+            return $this->render('/account/link/namewristlet.html.twig',[
+                'serials' => $serials,
+                'form' => $form->createView()
+            ]);
+    }
 }

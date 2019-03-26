@@ -52,6 +52,11 @@ class SerialNumber
     */
     public $checkConsent;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Weared", mappedBy="wearWristlet", cascade={"persist", "remove"})
+     */
+    private $wearedBy;
+
 
     public function __construct()
     {
@@ -143,6 +148,23 @@ class SerialNumber
     public function setMother(?User $Mother): self
     {
         $this->Mother = $Mother;
+
+        return $this;
+    }
+
+    public function getWearedBy(): ?Weared
+    {
+        return $this->wearedBy;
+    }
+
+    public function setWearedBy(Weared $wearedBy): self
+    {
+        $this->wearedBy = $wearedBy;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $wearedBy->getWearWristlet()) {
+            $wearedBy->setWearWristlet($this);
+        }
 
         return $this;
     }

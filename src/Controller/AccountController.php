@@ -24,19 +24,19 @@ class AccountController extends AbstractController
     /**
      *Permet d'afficher les fonctionnalitées reservé au profil inscrit
      *
-     * @Route("/account/logged", name="account_logged")
+     * @Route("/account/profile/logged", name="account_logged")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
 
     public function account(){
-        return $this->render('account/logged.html.twig');
+        return $this->render('account/profile/logged.html.twig');
     }
     
     /**
      *Permet d'afficher et de modifier les données du compte
      *
-     * @Route("/account/profile", name="account_profile")
+     * @Route("/account/profile/profile", name="account_profile")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
@@ -60,7 +60,7 @@ class AccountController extends AbstractController
         }
 
         
-        return $this->render('account/profile.html.twig', [
+        return $this->render('account/profile/profile.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -68,7 +68,7 @@ class AccountController extends AbstractController
     /**
      *Permet de modifier le mot de passe
      * @IsGranted("ROLE_USER")
-     * @Route("/account/updatepswd", name="account_updatepswd")
+     * @Route("/account/profile/updatepswd", name="account_updatepswd")
      * 
      * @return Response
      */
@@ -108,7 +108,7 @@ class AccountController extends AbstractController
 
             }
         
-        return $this->render('account/updatepswd.html.twig',[
+        return $this->render('account/profile/updatepswd.html.twig',[
             'form' => $form->createView()
         ]);
     }

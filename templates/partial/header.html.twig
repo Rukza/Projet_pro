@@ -28,13 +28,15 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountDropdownLink">
 
               <a href="{{ path('account_logged') }}" class="dropdown-item ">Mon compte </a>
-              
+               {% if is_granted('ROLE_MOTHER')%}
+              <a href="{{ path('wristlet_mother_adminitration')}}" class="dropdown-item">Administrer vos bracelet</a>
+            {% endif %}
+
               <a href="{{ path('account_link') }}" class="dropdown-item"> Ajouter un bracelet au compte </a>
               {% if is_granted('ROLE_MOTHER')%}
-              <a href="{{ path('wristlet_adminitration')}}" class="dropdown-item">Administrer vos bracelet</a>
-              <a href="{{ path('account_cardio') }}" class="dropdown-item"> Voir les bracelets lier au compte </a>
+              <a href="{{ path('account_cardio') }}" class="dropdown-item"> Consulter les données des bracelets lier au compte </a>
                {% elseif is_granted('ROLE_CHILD')%}
-               <a href="{{ path('account_cardio') }}" class="dropdown-item"> Voir les bracelets lier au compte </a>
+               <a href="{{ path('account_cardio') }}" class="dropdown-item"> Consulter les données des bracelets lier au compte </a>
                {% endif %}
 
               <div class="dropdown-divider"></div>

@@ -1,22 +1,55 @@
 {% extends 'admin/base.html.twig' %}
-{% block title %}Super Admin{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
 {% block body %}
 
-<div class="container text-center">
-    <h1 class="my-5">Vous êtes connecter en Super Administrateur</h1>
+<div class="container-fluid mt-5">
+
     <div class="row">
-        <div class="col-md-12 mt-3">
-            <div class="jumbotron bg-light">
-                <h2>Sur le compte {{user.email}}</h2>
-                <h3>de {{user.fullName}}</h3>
+        <div class="col">
+            <div class="card bg-primary text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-users fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">{{ stats.users }} Utilisateurs</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-info text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-ring fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title"> {{ stats.serials }} Bracelets</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-success text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-link fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title"> {{ stats.requests }} Demande de liaisons</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
     </div>
-
 </div>
-
-
-
-
 {% endblock %}
