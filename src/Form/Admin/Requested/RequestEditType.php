@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin\Requested;
 
-use App\Entity\SerialNumber;
-use App\Form\ApplicationType;
+use App\Entity\Requested;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class SerialNumberRenameType extends ApplicationType
+class RequestEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('wristletTitle', TextType::class, $this->getConfiguration("Nom du bracelet précédemment lier", "Veuillez donner un nom au bracelet"))
+            ->add('requestedMotherResponse')
+            ->add('requestedAccepted')
+            ->add('requestedRefused')
+            ->add('requestedBanned')
+            ->add('requestedFor')
+            ->add('requestedBy')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => SerialNumber::class,
+            'data_class' => Requested::class,
         ]);
     }
 }

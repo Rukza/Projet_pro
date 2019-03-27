@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin\SerialNumber;
 
-use App\Entity\User;
+use App\Entity\SerialNumber;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserEditType extends AbstractType
+class SerialNumberEditType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
-            ->add('pswd')
+            ->add('serialWristlet')
+            ->add('wristletTitle')
             ->add('active')
-            ->add('userRoles')
+            ->add('Mother')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => SerialNumber::class,
         ]);
     }
 }

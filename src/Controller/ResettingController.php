@@ -3,7 +3,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Form\ResettingType;
+use App\Form\ResettingPass\ResettingType;
 use App\Notification\Mailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

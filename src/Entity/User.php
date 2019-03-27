@@ -39,6 +39,21 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     */
+    private $adress;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+
+    private $postalCode;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
+    private $city;
+    /**
+     * @ORM\Column(type="string", length=255)
      * @Assert\Email(message="Veuillez renseigner un email valide")
      */
     private $email;
@@ -130,6 +145,45 @@ class User implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+    
+    public function getFullAdress(){
+        return "{$this->adress} {$this->postalCode} {$this->city}";
+            }
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): self
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(string $postalCode): self
+    {
+        $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

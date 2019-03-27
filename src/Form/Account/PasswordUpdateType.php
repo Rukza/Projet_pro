@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Account;
 
 use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +14,7 @@ class PasswordUpdateType extends ApplicationType
         $builder
         ->add('oldPassword', PasswordType::class, $this->getConfiguration("Ancien mot de passe", "Donnez votre mot de passe actuel"))
         ->add('newPassword', PasswordType::class, $this->getConfiguration("Nouveau mot de passe", "Donnez votre nouveau mot de passe"))
-        ->add('ConfirmPassword', PasswordType::class, $this->getConfiguration("Confirmation du mot de passe", "Confirmer votre nouveau mot de passe"));
+        ->add('ConfirmPassword', PasswordType::class, $this->getConfiguration("Confirmation du mot de passe", "Confirmer votre du nouveau mot de passe"));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Mother\Weared;
 
 use App\Entity\Weared;
 use App\Form\WearedType;

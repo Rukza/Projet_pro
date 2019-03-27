@@ -15,28 +15,34 @@
                 <hr>
                 {{ form_row(form.firstName) }}
                 {{ form_row(form.lastName) }}
-                {{ form_row(form.email) }}
+                {{ form_row(form.adress) }}
+                {{ form_row(form.postalCode) }}
+                {{ form_row(form.city) }}
+                
             </div>
         </div>
         <div class="col-md-6">
             <div class="jumbotron bg-light ">
                 <h2 class="alert-heading">
-                    Mot de passe
+                    Informations du compte
                 </h2>
                 <hr>
+                {{ form_row(form.email) }}
                 {{form_row(form.pswd)}}
                 {{form_row(form.pswdConfirm)}}
+                <br>
+                
+                <hr>
+            {{form_row(form.checkConsent)}}
 
-            </div>
-            
-        </div>
-        <div class="col-md-12">
-        {{form_row(form.checkConsent)}}
-
-            <button class="btn btn-primary"> confirmez l'Inscription
+            <button class="btn btn-primary"><i class="fas fa-check"></i> confirmez l'inscription
 
             </button>
             </div>
+            
+        </div>
+        
+        
     </div>
 
 

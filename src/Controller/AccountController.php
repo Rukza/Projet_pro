@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Form\AccountType;
+use App\Form\Account\AccountType;
 use App\Entity\PasswordUpdate;
-use App\Form\PasswordUpdateType;
+use App\Form\Account\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,13 +30,14 @@ class AccountController extends AbstractController
      */
 
     public function account(){
+        
         return $this->render('account/profile/logged.html.twig');
     }
     
     /**
      *Permet d'afficher et de modifier les données du compte
      *
-     * @Route("/account/profile/profile", name="account_profile")
+     * @Route("/account/profile/updateprofile", name="account_profile")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
@@ -60,7 +61,7 @@ class AccountController extends AbstractController
         }
 
         
-        return $this->render('account/profile/profile.html.twig', [
+        return $this->render('account/profile/updateprofile.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\WristletLink;
 
 use App\Entity\SerialNumber;
 use App\Form\ApplicationType;

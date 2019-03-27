@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Requested;
-use App\Form\UserAddType;
-use App\Form\UserEditType;
+use App\Form\Admin\Users\UserAddType;
+use App\Form\Admin\Users\UserEditType;
 use App\Entity\SerialNumber;
-use App\Form\RequestAddType;
-use App\Form\RequestEditType;
-use App\Form\SerialNumberEditType;
+use App\Form\Requested\Admin\RequestAddType;
+use App\Form\Requested\Admin\RequestEditType;
+use App\Form\Admin\SerialNumber\SerialNumberEditType;
 use App\Repository\UserRepository;
 use App\Repository\RequestedRepository;
 use App\Repository\SerialNumberRepository;

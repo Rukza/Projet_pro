@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Contact;
 
 use App\Entity\Contact;
 use App\Form\ApplicationType;

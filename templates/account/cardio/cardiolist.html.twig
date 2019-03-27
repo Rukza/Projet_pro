@@ -3,28 +3,39 @@
 {% block title %}profile {{app.user.email}}{% endblock %}
 {% block body %}
 
-<div class="container text-center">
-  <h1 class="my-5">Profile de {{app.user.FullName}}</h1>
-  <div class="row">
-    <div class="col-md-12 mt-5">
-      <div class="jumbotron bg-light">
-        <h4>Les bracelets lier a votre compte</h4>
-        <hr>
-        {% for SerialNumber in app.user.motherFor %}
-        <h4>Bracelet : {{SerialNumber.wristletTitle}}</h4>
-        <p>
-          <a href="{{path('wristlet', {'id': SerialNumber.id}) }}" class="btn btn-info">Plus
-            d'informations</a>
-        </p>
-        {% endfor %}
-        <br>
-        <br>
-        <br>
-        <br>
-      </div>
-    </div>
+<div class="container-fluid text-center">
+  <h1 class="my-5">Les bracelets lier a votre compte</h1>
+  <table class="table table-hover jumbotron bg-light">
 
-  </div>
+
+    <thead>
+      <tr>
+        <th>Nom du bracelet</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% for SerialNumber in app.user.motherFor %}
+    <tbody>
+
+      <td>
+        <h4>{{SerialNumber.wristletTitle}}</h4>
+      </td>
+      <td>
+        <a href="{{path('wristlet', {'id': SerialNumber.id}) }}" class="btn btn-info"><i class="fas fa-heartbeat"></i>
+          Voir le rythme cardiaque</a>
+      </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  <br>
+
+</div>
+</div>
+
+</div>
 
 </div>
 

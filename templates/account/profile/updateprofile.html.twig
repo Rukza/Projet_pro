@@ -9,10 +9,12 @@
             <div class="jumbotron bg-light">
                 <div class="mt-5">
                     {{ form_start(form)}}
-
                     {{ form_row(form.email) }}
+                    {{ form_row(form.adress) }}
+                    {{ form_row(form.postalcode) }}
+                    {{ form_row(form.city) }}
 
-                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Enregistrer les modifications</button>
 
                     {{ form_end(form)}}
                 </div>

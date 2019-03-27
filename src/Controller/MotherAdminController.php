@@ -5,16 +5,17 @@ namespace App\Controller;
 use App\Entity\Weared;
 use Doctrine\ORM\Query;
 use App\Entity\Requested;
-use App\Form\WearedAddType;
 use App\Entity\SerialNumber;
-use App\Form\WearedEditType;
-use App\Form\LinkedStatuEditType;
 use App\Repository\WearedRepository;
+use App\Form\Mother\Weared\WearedAddType;
+use App\Form\Mother\Weared\WearedEditType;
 use App\Repository\SerialNumberRepository;
+use App\Form\Mother\Link\LinkedStatuEditType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\WristletLink\SerialNumberRenameType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -28,7 +29,7 @@ class MotherAdminController extends AbstractController
      * @return Response
      */
 
-    public function adminWristlet(WearedRepository $repo,ObjectManager $manager)
+    public function adminWristlet(ObjectManager $manager)
     {
         $user = $this->getUser();
         //stats des bracelets totals d'un compte mother
@@ -45,6 +46,16 @@ class MotherAdminController extends AbstractController
            ->andWhere('s.attributedTo = :false')
            ->setParameter('false', 0);
         $numWears = $queryWears->getQuery()->getSingleScalarResult();
+
+        //stats des bracelets qui n'ont pas eu de nom
+        $queryNotNamed  = $manager->createQueryBuilder();
+        $queryNotNamed ->select('COUNT(s.attributedTo)')
+           ->from(SerialNumber::class, 's')
+           ->where('s.Mother = :user')
+           ->setParameter('user', $user)
+           ->andWhere('s.wristletTitle = :NotNamed')
+           ->setParameter('NotNamed', "Undefine");
+        $numNotNames = $queryNotNamed->getQuery()->getSingleScalarResult();
         
         //stats des requetes pour tout les bracelets d'un compte mother
         $queryRequests = $manager->createQuery('SELECT COUNT(r.requestedFor) FROM App\Entity\Requested r WHERE r.requestedFor = :user');
@@ -66,9 +77,38 @@ class MotherAdminController extends AbstractController
            'numRequests' => $numRequests,
            'numWristlets' => $numWristlets,
            'numWears' => $numWears,
-           'numWaiting' => $numWaiting
+           'numWaiting' => $numWaiting,
+           'numNotNames' => $numNotNames
            ]
         ]);
+    }
+
+    /**
+     * Permet de modifier le nom d'un bracelet
+     * 
+     * @Route ("/account/mother/{id}/edit", name="mother_Wristlet_Name_edit")
+     * @IsGranted("ROLE_MOTHER")
+     * @return Response
+     */
+    public function editWristletName(SerialNumber $requested, ObjectManager $manager, Request $request){
+        $form = $this->createForm(SerialNumberRenameType::class,$requested);
+        
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()&& $form->isValid()){
+                $manager->persist($requested);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Le bracelet {$requested->getwristletTitle()} a bien été modfiée !"
+                );
+            }
+            return $this->render('/account/mother/edit.html.twig',[
+                'SerialNumber' => $requested,
+                'form' => $form->createView()
+            ]);
     }
 
     /**

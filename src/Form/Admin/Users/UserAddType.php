@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin\Users;
 
 use App\Entity\User;
 use App\Form\ApplicationType;

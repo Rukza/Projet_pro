@@ -9,24 +9,37 @@
 
     {{form_start(form)}}
 
-    <div class="row">
-        <div class="col">
-            
-                
-                <div class="card-body bg-light">
-                    {{form_widget(form)}}
-                    <p>Attention, les données que vous allez saisir sont des données à caractère personnel d'une tierce personne. Conformément au <a href="https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on" target="_blank">RGPD</a>
-                     vous devez justifier cette personne, ou son représentant légal, vous a expressement donné les droits pour le traitement de ces données dans le cadre de cette application.</p>
-                    {{form (form.checkRgpd)}}
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check"></i>
-                        Enregistrer les Modifications
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        {{form_end(form)}}
+    <div class="col">
+        <div class="jumbotron bg-light">
+            {{form (form.firstName)}}
+            <br>
+            {{form (form.lastName)}}
+            <br>
+            {{form (form.adress)}}
+            <br>
+            {{form (form.postalCode)}}
+            <br>
+            {{form (form.city)}}
+            <br>
+            {{form (form.wearWristlet)}}
+            <br>
+            <p>Attention, les données que vous allez saisir sont des données à caractère personnel d'une tierce
+                personne. Conformément au <a href="https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on"
+                    target="_blank">RGPD</a>
+                vous devez justifier cette personne, ou son représentant légal, vous a expressement donné les droits
+                pour le traitement de ces données dans le cadre de cette application.</p>
+            {{form (form.checkRgpd)}}
+            <br>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-check"></i>
+                Enregistrer les Modifications
+            </button>
+
+        </div>
     </div>
 
-    {% endblock %}
+    {{form_end(form)}}
+</div>
+
+{% endblock %}

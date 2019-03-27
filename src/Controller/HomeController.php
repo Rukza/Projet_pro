@@ -16,4 +16,11 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    /**
+     * @Route("/generalmention", name="general_mention")
+     */
+    public function generaMention(){
+        return $this->render('generalmention.html.twig');
+    }
 }
