@@ -5,9 +5,9 @@
 <div class="container-fluid">
 
     <h1 class="my-5">Gestion des liaisons de vos bracelets</h1>
-    <table class="table table-hover jumbotron bg-light">
+    <table class="table table-striped table-hover text-center">
 
-        <thead>
+        <thead class="thead-light">
             <tr>
                 <th>Demander par</th>
                 <th>Pour le bracelet</th>
@@ -27,9 +27,9 @@
 
                 <td>{{requested.requestedBy}}</td>
                 <td>{{requested.requestedFor}}</td>
-                <td>{{requested.requestedAccepted}}</td>
-                <td>{{requested.requestedRefused}}</td>
-                <td>{{requested.requestedBanned}}</td>
+                <td>{{requested.requestedAccepted|replace({ (1): "X" })}}</td>
+                <td>{{requested.requestedRefused|replace({ (1): "X" })}}</td>
+                <td>{{requested.requestedBanned|replace({ (1): "X" })}}</td>
                 
                 <td>
                     <div class="text-center">

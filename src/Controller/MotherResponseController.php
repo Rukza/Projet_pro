@@ -88,7 +88,7 @@ class MotherResponseController extends AbstractController
                     
                 $this->addFlash(
                 'success',
-                "La demande de {$user->getEmail()} a bien été refusée et il pourra cependant vous refaire une demande pour le bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez a changer d'avis, connecter vous a votre administration et acceptez ou bannisser la demande"
+                "La demande de {$user->getEmail()} a bien été refusée, il pourra cependant vous refaire une demande pour le bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connecter vous à votre administration et accepter ou bannisser la demande"
                 );
             
             }
@@ -123,7 +123,7 @@ class MotherResponseController extends AbstractController
             
                 $this->addFlash(
                 'success',
-                "La demande de {$user->getEmail()} a bien été accepté, il pourra donc consulter les données du bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez a changer d'avis, connecter vous a votre administration et supprimer ou bannisser la demande"
+                "La demande de {$user->getEmail()} a bien été accepté, il pourra donc consulter les données du bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connecter vous à votre administration et supprimer ou bannisser la demande"
                 );
             }
         

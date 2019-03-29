@@ -8,7 +8,8 @@
                    <h1>Profile de {{app.user.Email}}</h1>
                 </div>
         <br>
-        <p>Bienvenue {{app.user.fullName}} sur votre section administration</p>
+        <p>Bienvenue {{app.user.fullName}} sur votre page de profile</p>
+        <p>Vous trouverez ici tous les outils nécéssaires pour gérer de votre compte</p>
        
     </div>
     <div class="card-body text-center">
@@ -26,7 +27,7 @@
                     <h4>Modifier les données du compte</h4>
                 </div>
                 <div class="card-body">
-                    <a href="{{ path('account_profile') }}">Modfier votre Email</a>
+                    <a href="{{ path('account_profile') }}">Modfier votre Email/Adresse postale</a>
                     <br>
                     
                     <a href="{{ path('account_updatepswd') }}">Modfier votre mot de passe</a>
@@ -42,7 +43,7 @@
                         <h4>Acceder au fonction du bracelet</h4>
                     </div>
                     <div class="card-body">
-                        <a href="{{ path('account_link') }}">Ajouter un bracelet au compte</a>
+                        <a href="{{ path('account_link') }}">Ajouter un bracelet a se compte</a>
                         <br>
                       
                         <a href="{{ path('account_cardio') }}">Consulter les données des bracelets lier au compte</a>

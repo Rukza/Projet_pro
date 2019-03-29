@@ -58,7 +58,7 @@ class WristletLinkController extends AbstractController
                  $user->addMotherFor($numberBdd);                 
                  
                  $roleAdded->addUser($user);
-                 $numberBdd->setActive(true);
+                 $numberBdd->setActiveSerial(true);
                  
                  //$numberBdd->setMother($user);
                         
@@ -68,7 +68,7 @@ class WristletLinkController extends AbstractController
 
                  $this->addFlash(
                      'success',
-                     "Compte lier, veuillez nomé le bracelet que vous venez de lier."
+                     "Compte lier, veuillez nommer le bracelet que vous venez de lier."
                  );
                  
                  return $this->redirectToRoute('mother_wristlet_named',array(
@@ -103,17 +103,17 @@ class WristletLinkController extends AbstractController
                             
                                 $contactMother->sendMessage('noreply@wristband.com', $numberBdd->getMother()->getEmail(), 'Demande de liaison a un de vos bracelet', $bodyMail);
                                                         
-                    $this->addFlash("warning", "Le bracelet a déjà été lier et nommé.Un mail de confirmation au compte principale a été envoyer.
+                    $this->addFlash("warning", "Le bracelet a déjà été lier et nommé.Un mail de confirmation au compte principale a été envoyé.
                     Vous devez attrendre la confirmation de la personne détenteur du compte principale.");  
                       
                 }else if($numberBdd->getMother() == $user = $this->getUser()){
-                    $this->addFlash("warning","dude t'est déja mother.");
+                    $this->addFlash("warning","Vous ne pouvez refaire une demande sur ce bracelet car vous avez déjà lier a ce compte.");
                    
                 }else if($requested[0]->getRequestedBanned() === true){
-                    $this->addFlash("warning","dude t'es ban.");     
+                    $this->addFlash("warning","Vous ne pouvez pas faire une demande pour ce bracelet, votre compte a été bloquer par la personne détentrice des droits de ce bracelet.");     
 
                 }else if($requested !== null && $numberBdd->getMother() !== $user = $this->getUser()){
-                    $this->addFlash("warning","dude t'a déja demander waiting.");
+                    $this->addFlash("warning","Vous avez déjà fait une demande de liaison sur ce bracelet, veuillez attendre que la personne détentruce des droits valide la demande.");
                 
                 } 
                
@@ -146,7 +146,7 @@ class WristletLinkController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le bracelet a bien été nomé, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter a nouveau."
+                    "le bracelet a bien été nomé, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter à nouveau."
                 );
             }
         }else{

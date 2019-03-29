@@ -177,8 +177,7 @@ sup {
 }
 
 a {
-  
-  text-decoration: none;
+    text-decoration: none;
   color: #E95420;
   background-color: transparent;
 }
@@ -4844,7 +4843,7 @@ input[type="button"].btn-block {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
 .navbar>.container,
@@ -4891,6 +4890,7 @@ input[type="button"].btn-block {
 }
 
 .navbar-nav .nav-link {
+  font-size: 1.4rem;
   padding-right: 0;
   padding-left: 0;
 }
@@ -7349,7 +7349,7 @@ button.bg-light:focus {
 }
 
 .bg-dark {
-  background-color: #c0bdbd !important;
+  background-color: #615555 !important;
 }
 
 a.bg-dark:hover,
@@ -11483,6 +11483,77 @@ a.text-dark:focus {
 .highcharts-title{
   visibility: hidden;
 }
+
+.parallax {
+  /* The image used in home page*/
+  background-image: url("../img/polar.jpg");
+  
+  /* Set a specific height */
+  min-height: 700px; 
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+
+/* Show in Large desktops and laptops */
+@media (min-width: 1200px) {
+.polar{
+  background-image: url("../img/polar-3.jpg");
+  background-repeat: no-repeat;
+  height: 500px;
+  
+  
+}
+
+}
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+  .polar {
+    background-image: url("../img/polar-3.jpg");
+  background-repeat: no-repeat;
+
+}
+
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+
+      .polar {
+    background-image: none;
+}
+
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+
+      .polar {
+    background-image: none;
+}
+
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 500px) {
+
+      .polar {
+    background-image: none;
+    
+}
+
+}
+/*Center fa icon with text*/
+.fal{
+vertical-align: middle;
+margin-right: 0.5em;
+color: #E95420;
+}
 /*==========================footer1===========================*/
 .footer1 {
   padding-top: 60px;
@@ -11522,7 +11593,6 @@ a.text-dark:focus {
   padding: 5px;
   border-bottom: 1px solid white;
 
-
 }
 
 /*==========================footer2===========================*/
@@ -11530,6 +11600,7 @@ a.text-dark:focus {
 
   background-color: #000000;
   color: white;
+  
 
 }
 

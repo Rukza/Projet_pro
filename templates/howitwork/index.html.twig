@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Description des bracelets K.I.S{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row polar">
+        <div class="col-5"></div>
+        <div class="col-3 pt-5">
+            <br>
+
+            <h5>
+                <i class="fas fa-bell fa-2x fal"></i>
+                Prévient automatiquement les proches
+            </h5>
+            <br>
+            <br>
+
+            <h5> <i class="fas fa-map-marker-alt fa-2x fal"></i> Signalement GPS
+
+            </h5>
+            <br>
+            <br>
+
+            <h5> <i class="fas fa-heartbeat fa-2x fal"></i>
+                Capteur cardiaque
+            </h5>
+
+
+        </div>
+
+        <div class="col-3 pt-5">
+            <br>
+            <h5>
+                <i class="fas fa-tint fa-2x fal"></i>
+                Etanche
+            </h5>
+            <br>
+            <br>
+            <h5>
+                <i class="fas fa-battery-full fa-2x fal"></i>
+                Rechargé en moins d'une heure
+            </h5>
+            <br>
+            <br>
+            <h5>
+                <i class="fas fa-mobile-alt fa-2x fal"></i>
+                Fonctionne sans smartphone
+            </h5>
+
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid mb-5">
+    
+    <div class="row">
+
+        <div class="col-md-6  jumbotron">
+
+            <div>
+                <h3>Caractéristiques</h3>
+                <br>
+                <p><b>Esthétique et élégant :</b></p>
+                <p>Le bracelet connectée KIS arbore un look sobre et moderne,
+                    afin de sastifaire les goûts de chacun le bracelet sera disponible en plusieur colorie</p>
+
+                <p><b>Une utilisation facile :</b></p>
+                <p>Navigable grace a sont écran tactile, nous avons simplifier son menu le rendant le plus intuitif que
+                    possible.</p>
+
+                <p><b>Un site web dédier :</b></p>
+                <p>En créant un compte sur notre site, vous pourrez autorisées d'autre utilisateur du site,
+                    que se soit vos proche ou même votre médécin traitant de consulter en ligne vos donnée cardiaque.
+                </p>
+                <p><b>Vos données sont Protégées :</b></p>
+                <p>Aucune personnes ne pourra acceder a vos données, sans avoir crée un compte, renseigné le numéro se
+                    trouvant au dos de votre bracelet et une validation de la demande sera envoyer par mail au compte
+                    identifier comme principale.</p>
+            </div>
+                </p><a href= "{{ path('account_register')}}" class="btn btn-outline-primary btn-white">Vous inscrire</a>
+
+        </div>
+        <div class="col-md-6">
+            <img src="../img/polar-2.jpg" class="img-fluid" alt="">
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-6">
+            <img src="../img/polar-4.jpg" class="img-fluid" alt="">
+        </div>
+        <div class="col-md-6  jumbotron  ">
+            <div class="card-body">
+                <h3 class="card-title">Les fonctionnalités du bracelet KIS</h3>
+                <p>Découvrez le premier bracelet connectée pour seniors qui ne nécéssite pas de smartphone :</p>
+
+                <p><b>Autonome :</b>
+                    <p>
+                        <p>Avec ça carte sim intégrée, le bracelet KIS n'a pas besoin que vous possédier un smartphone
+                            pour fonctionner.</b></p>
+
+                        <p><b>Détection des chutes :</b></p>
+                        <p>La fonction capteur <b>anti-chute</b> située dans le bracelet connectée détecte la chute,
+                            alors il envois des SMS avec votre position GPS , automatiquement (un message
+                            apparaît
+                            sur le bracelet qui vibre "Etes-vous tombé(e) ?
+                            Sans aucune intervention de votre part l'alerte est déclenchée.</p>
+
+                        <p><b>Géolocalisation GPS :</b></p>
+                        <p>Afin de préserver votre vie privé, <b>le bracelet est
+                                géolocalisée seulement en cas de chute.</b></p>
+
+                        <p><b>Suivi d'activité :</b></p>
+                        <p>Surveillez votre activité et votre rythme cardiaque directement accessible depuis l'écran
+                            tactile
+                            du bracelet et consultable par les personnes autorisées directement en ligne.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+</div>
+{% endblock %}

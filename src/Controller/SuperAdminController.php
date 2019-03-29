@@ -3,20 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Weared;
 use App\Entity\Requested;
+use App\Entity\SerialNumber;
+use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
+use App\Repository\WearedRepository;
 use App\Form\Admin\Users\UserAddType;
 use App\Form\Admin\Users\UserEditType;
-use App\Entity\SerialNumber;
-use App\Form\Requested\Admin\RequestAddType;
-use App\Form\Requested\Admin\RequestEditType;
-use App\Form\Admin\SerialNumber\SerialNumberEditType;
-use App\Repository\UserRepository;
 use App\Repository\RequestedRepository;
+use App\Form\Admin\Weared\WearedAddType;
+use App\Form\Mother\Weared\WearedEditType;
 use App\Repository\SerialNumberRepository;
+use App\Form\Admin\Requested\RequestAddType;
+use App\Form\Admin\Requested\RequestEditType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\Admin\SerialNumber\SerialNumberEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -32,14 +37,11 @@ class SuperAdminController extends AbstractController
         $users = $manager->createQuery('SELECT COUNT(u) FROM App\Entity\User u')->getSingleScalarResult();
         $serials = $manager->createQuery('SELECT COUNT(s) FROM App\Entity\SerialNumber s')->getSingleScalarResult();
         $requests = $manager->createQuery('SELECT COUNT(r) FROM App\Entity\Requested r')->getSingleScalarResult();
-        
+        $wears = $manager->createQuery('SELECT COUNT(w) FROM App\Entity\Weared w')->getSingleScalarResult();
+
 
         return $this->render('/admin/index.html.twig',[
-            'stats' => [
-                'users' => $users,
-                'serials' => $serials,
-                'requests' => $requests,
-            ]
+            'stats' => compact('users','serials', 'requests', 'wears')
         ]);
     }
 
@@ -95,21 +97,28 @@ class SuperAdminController extends AbstractController
      */
 
     public function editUser(User $user, Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder){
+       
         $form = $this->createForm(UserEditType::class,$user);
         
-
+        $oldRole = $user->getUserRoles();
+        $oldRole[0]->removeUser($user);    
+        $role = $form->get('userRoles')->getData();
+        
         $form->handleRequest($request);
-
+      
         if($form->isSubmitted() && $form->isValid()){
+            $user->getUserRoles();
+            
                 $hash = $encoder->encodePassword($user, $user->getPswd());
                 $user->setPswd($hash);
-                //todo set le role
+                $role[0]->removeUser($user);
+                $role[0]->addUser($user);
                 $manager->persist($user);
                 $manager->flush();
 
                 $this->addFlash(
                     'success',
-                    "l'utilisateur {$user->getFullName()} a bien été modifier !"
+                    "l'utilisateur {$user->getFullName()} a bien été modifié !"
                 );
             }
             return $this->render('admin/users/edit.html.twig',[
@@ -198,7 +207,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le bracelet a bien été modifier !"
+                    "le bracelet a bien été modifié !"
                 );
             }
             return $this->render('admin/wristlets/edit.html.twig',[
@@ -226,6 +235,101 @@ class SuperAdminController extends AbstractController
         return $this->redirectToRoute('wristlets_management');
     }
 
+
+
+    /**
+    * @Route("/admin/weareds/wearedmanagement", name="weared_management")
+    * @IsGranted("ROLE_ADMIN")
+    * @return Response
+    */
+    public function wearedManagement(WearedRepository $wearedRepo){
+        
+        return $this->render('admin/weareds/wearedmanagement.html.twig',[
+            'weareds' =>$wearedRepo->findAll()
+        ]);
+    }
+
+    /**
+     * Permet d'ajouter un porteur
+     * 
+     * @Route("/admin/weareds/add", name="admin_weared_add")
+     * @IsGranted("ROLE_ADMIN")
+     * @return response 
+     */
+
+    public function addWeared(Request $request, ObjectManager $manager){
+        $wearer = new Weared();
+        $form = $this->createForm(WearedAddType::class,$wearer);
+        
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+               
+                $manager->persist($wearer);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "le porteur de bracelet {$wearer->getFullName()} a bien ajouté !"
+                );
+            }
+            return $this->render('admin/weareds/add.html.twig',[
+                'wears' => $wearer,
+                'form' => $form->createView()
+            ]);
+    }
+    
+     /**
+     * Permet de modifier un porteur
+     * 
+     * @Route("/admin/weareds/{id}/edit", name="admin_weared_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * @return response 
+     */
+
+    public function editweared(Weared $wear, Request $request, ObjectManager $manager){
+       
+        $form = $this->createForm(WearedEditType::class,$wear);
+        
+        
+        $form->handleRequest($request);
+      
+        if($form->isSubmitted() && $form->isValid()){
+           
+                $manager->persist($wear);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Le porteur de bracelet {$wear->getFullName()} a bien été modifié !"
+                );
+            }
+            return $this->render('admin/weareds/edit.html.twig',[
+                'wears' => $wear,
+                'form' => $form->createView()
+            ]);
+    }
+
+     /**
+     * Permet de supprimer un porteur
+     *
+     * @Route ("/admin/users/weareds/{id}/delete", name="admin_weared_delete")
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
+    public function deleteweared(Weared $wear, ObjectManager $manager){
+            $mother = $wear->getWearWristlet();
+            $mother->setAttributedTo(false);
+            $manager->remove($wear);
+            $manager->flush();
+            
+            $this->addflash(
+                'success',
+                "Le porteur de bracelet a bien été supprimée !"
+                
+            );
+            return $this->redirectToRoute('weared_management');
+        }
 
     
       /**

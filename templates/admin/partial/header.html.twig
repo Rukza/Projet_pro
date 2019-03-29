@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg bg-dark sticky-top">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
     aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="fas fa-bars"></span>
@@ -21,6 +21,11 @@
         <a class="nav-link" href="{{ path('wristlets_management')}}">
         <i class="fas fa-ring"></i>
         Bracelets</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('weared_management')}}">
+        <i class="fas fa-user-md"></i>
+        Personne suivit par un bracelet</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ path('requests_management')}}">

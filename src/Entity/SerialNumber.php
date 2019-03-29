@@ -32,7 +32,7 @@ class SerialNumber
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $active;
+    private $activeSerial;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Requested", mappedBy="requestedFor", orphanRemoval=true)
@@ -99,14 +99,14 @@ class SerialNumber
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getActiveSerial(): ?bool
     {
-        return $this->active;
+        return $this->activeSerial;
     }
 
-    public function setActive(?bool $active): self
+    public function setActiveSerial(?bool $activeSerial): self
     {
-        $this->active = $active;
+        $this->activeSerial = $activeSerial;
 
         return $this;
     }

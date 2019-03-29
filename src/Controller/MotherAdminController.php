@@ -146,7 +146,7 @@ class MotherAdminController extends AbstractController
 
     public function addWeared(Request $request, ObjectManager $manager){
         $weared = new Weared();
-        
+        //envois de l'user au form pour avoir acces au nom de bracelet valide
         $form = $this->createForm(WearedAddType::class, $weared, [
         'user' => $user=$this->getUser()
         ]);
@@ -164,7 +164,7 @@ class MotherAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "l'utilisateur {$weared->getFullName()} a bien ajouté et lier au bracelet {$weared->getWearWristlet()}"
+                    "L'utilisateur {$weared->getFullName()} a bien été ajouté et lier au bracelet {$weared->getWearWristlet()}"
                 );
         }
             return $this->render('/account/mother/weared/add.html.twig',[

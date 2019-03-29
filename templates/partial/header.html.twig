@@ -10,10 +10,10 @@
         <a class="nav-link" href=" {{ path('homepage')}} ">Accueil<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href=" {{ path('description')}} ">Description</a>
+        <a class="nav-link" href=" {{ path('how_it_work')}} ">Fonctionnement du bracelet</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ path('contact')}}">Contact</a>
+        <a class="nav-link" href="{{ path('contact')}}">Contactez nous</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
@@ -27,24 +27,29 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountDropdownLink">
 
-              <a href="{{ path('account_logged') }}" class="dropdown-item "><i class="fas fa-user"></i>   Mon compte</a>
+              <a href="{{ path('account_logged') }}" class="dropdown-item "><i class="fas fa-user"></i> Mon compte</a>
               <hr>
-              <a href="{{ path('account_link') }}" class="dropdown-item"><i class="fas fa-plus-circle"></i> Ajouter un bracelet au compte</a>
+              <a href="{{ path('account_link') }}" class="dropdown-item"><i class="fas fa-plus-circle"></i> Ajouter un
+                bracelet au compte</a>
               <hr>
               {% if is_granted('ROLE_MOTHER')%}
-              <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter les données cardique </a>
-               {% elseif is_granted('ROLE_CHILD')%}
-               <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter les données cardiaque </a>
-               {% endif %}
+              <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter
+                les données cardiaque </a>
+              {% elseif is_granted('ROLE_CHILD')%}
+              <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter
+                les données cardiaque </a>
+              {% endif %}
 
               <hr>
               {% if is_granted('ROLE_ADMIN') %}
 
-              <a class="dropdown-item" href="{{path('super_admin')}}"><i class="fas fa-user-shield"></i> Espace Super Admin</a>
+              <a class="dropdown-item" href="{{path('super_admin')}}"><i class="fas fa-user-shield"></i> Espace Super
+                Admin</a>
               <hr>
               {% endif %}
 
-              <a href="{{ path('account_logout') }}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
+              <a href="{{ path('account_logout') }}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i>
+                Deconnexion</a>
 
             </div>
           </li>
@@ -53,6 +58,7 @@
           <li class="nav-item">
             <a href="{{ path('account_register')}}" class="nav-link"><i class="fas fa-user"></i> Inscription</a>
           </li>
+          <hr>
           <li class="nav-item">
             <a href="{{ path('account_login')}}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Connexion</a>
           </li>

@@ -71,7 +71,7 @@ class ResettingController extends Controller
         
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
-        $daySeconds = 60 * 10;//to do passé a 24h la validation *24
+        $daySeconds = 60 * 10;//to do passé *60*24
         $response = $interval > $daySeconds ? false : $reponse = true;
         return $response;
     }
@@ -84,7 +84,7 @@ class ResettingController extends Controller
         // interdit l'accès à la page si:
         // le token associé au membre est null
         // le token enregistré en base et le token présent dans l'url ne sont pas égaux
-        // le token date de plus de 10 minutes
+        // le token date de plus de X minutes
         if ($user->getToken() === null || $token !== $user->getToken() || !$this->isRequestInTime($user->getPasswordRequestedAt()))
         {
             throw new AccessDeniedHttpException();

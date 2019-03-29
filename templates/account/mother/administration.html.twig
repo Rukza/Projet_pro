@@ -75,6 +75,7 @@
             <tr>
                 <th>Nom</th>
                 <th>Numéro de série</th>
+                <th>Lier a un utilisateur</th>
                 <th>Editer le nom du bracelet</th>
             </tr>
         </thead>
@@ -84,6 +85,7 @@
                 <td class="{% if SerialNumber.wristletTitle == "Undefine" %}table-warning{% endif %}">
                     {{SerialNumber.wristletTitle}}</td>
                 <td>{{SerialNumber.serialwristlet}}</td>
+                <td>{{SerialNumber.attributedTo|replace({ (1): "Oui" })}}</td>
                 <td>
                     <a href="{{path ('mother_Wristlet_Name_edit', {'id':SerialNumber.id})}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                 </td>
