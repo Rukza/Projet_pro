@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// Form to allow a mother account to manage request status
+
 class LinkedStatuEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

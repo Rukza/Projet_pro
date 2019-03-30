@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
+// Form to change user password
+
 class PasswordUpdateType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

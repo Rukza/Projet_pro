@@ -20,8 +20,8 @@ class ResettingController extends Controller
 {
             
 
-/**
-     * Permet de demander et de recevoir par mail une reinitialisation du mot de passe
+     /**
+     * Form to request a password reset if the user have lost it
      *
      * @route("/requete", name="requete_reset")
      */
@@ -60,8 +60,8 @@ class ResettingController extends Controller
                         'form' => $form->createView()
                     ]);
     }
-     // si supérieur à 10 min, retourne false
-    // sinon retourne false
+    
+    // Function to see if the request password have pass X time
     private function isRequestInTime(\Datetime $passwordRequestedAt = null)
     {
         if ($passwordRequestedAt === null)
@@ -71,20 +71,24 @@ class ResettingController extends Controller
         
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
-        $daySeconds = 60 * 10;//to do passé *60*24
+        $daySeconds = 60 * 10;//TODO time on 24hours *60*24
         $response = $interval > $daySeconds ? false : $reponse = true;
         return $response;
     }
 
     /**
+     * Form to set a new user password 
+     * 
      * @Route("account/resettingpswd/{id}/{token}", name="reset")
      */
     public function resetting(User $user, $token, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        // interdit l'accès à la page si:
-        // le token associé au membre est null
-        // le token enregistré en base et le token présent dans l'url ne sont pas égaux
-        // le token date de plus de X minutes
+       
+        /*Deny acces :
+              - the token was null
+              - the token not egal to the token url
+              - the request timed have pass the time accepted
+          */      
         if ($user->getToken() === null || $token !== $user->getToken() || !$this->isRequestInTime($user->getPasswordRequestedAt()))
         {
             throw new AccessDeniedHttpException();
@@ -97,8 +101,7 @@ class ResettingController extends Controller
         {
             $password = $passwordEncoder->encodePassword($user, $user->getPswd());
             $user->setPswd($password);
-
-            // réinitialisation du token à null pour qu'il ne soit plus réutilisable
+            
             $user->setToken(null);
             $user->setPasswordRequestedAt(null);
 

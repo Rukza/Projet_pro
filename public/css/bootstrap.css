@@ -11486,7 +11486,7 @@ a.text-dark:focus {
 
 .parallax {
   /* The image used in home page*/
-  background-image: url("../img/polar.jpg");
+  background-image: url("../img/Home/polar.jpg");
   
   /* Set a specific height */
   min-height: 700px; 
@@ -11502,7 +11502,7 @@ a.text-dark:focus {
 /* Show in Large desktops and laptops */
 @media (min-width: 1200px) {
 .polar{
-  background-image: url("../img/polar-3.jpg");
+  background-image: url("../img/HowItWork/polar-3.jpg");
   background-repeat: no-repeat;
   height: 500px;
   
@@ -11548,7 +11548,7 @@ a.text-dark:focus {
 }
 
 }
-/*Center fa icon with text*/
+/*fa icon from page how it work*/
 .fal{
 vertical-align: middle;
 margin-right: 0.5em;

@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+//Form to allow admin to add wearer
+
 class WearedAddType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

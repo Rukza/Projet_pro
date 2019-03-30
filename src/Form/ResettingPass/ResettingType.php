@@ -9,6 +9,8 @@ use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
+//Form to request if password is forget
+
 class ResettingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

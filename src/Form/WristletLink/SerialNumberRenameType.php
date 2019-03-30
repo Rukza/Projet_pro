@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+//Form to allow a mother account to name the wristlet they have link
+
 class SerialNumberRenameType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

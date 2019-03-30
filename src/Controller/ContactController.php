@@ -12,6 +12,8 @@ use App\Notification\ContactNotification;
 class ContactController extends AbstractController
 {
     /**
+     * Display the form to allow all user from the website to contact us
+     * 
      * @Route("/contact", name="contact")
      * 
      * @return Response

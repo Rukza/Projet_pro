@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
+//Form to link an account to a wristlet with serial number
+
 class SerialNumberType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

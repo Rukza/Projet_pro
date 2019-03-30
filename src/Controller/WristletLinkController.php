@@ -20,9 +20,8 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class WristletLinkController extends AbstractController
 {
 
-
-    /**
-     *Permet d'afficher le formulaire pour lier un bracelet au compte
+     /**
+     * Display the form to link a wristlet to an user if they have the right serial code
      *
      * @Route("/account/link/link", name="account_link")
      * @IsGranted("ROLE_USER")
@@ -37,7 +36,6 @@ class WristletLinkController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
-            /*recuperation des données entré dans le form et de l'utilisateur qui la soumis*/
                 $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
                 $numberBdd = $repository->findOneByserialWristlet($form->get('serialWristlet')->getData());
                 
@@ -48,10 +46,10 @@ class WristletLinkController extends AbstractController
                             ->getRepository(Requested::class)
                             ->findBy(array('requestedBy' => $user, 'requestedFor' => $numberBdd));
                             
-           /*Vérification si le bracelet demandé n'a pas déjà été validé*/
-            if($numberBdd->getActive() === null){ 
+           // Vérify if the wristlet is alredy active if not the user can be the mother account
+            if($numberBdd->getActiveSerial() === null){ 
                            
-                 /*selectionne le Role et le numero du bracelet pour lier a l'utilisateur*/
+                 
                  $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
                  $roleAdded = $repositoryRole->findOneBytitle('ROLE_MOTHER');
                  $user = $this->getUser();
@@ -60,12 +58,12 @@ class WristletLinkController extends AbstractController
                  $roleAdded->addUser($user);
                  $numberBdd->setActiveSerial(true);
                  
-                 //$numberBdd->setMother($user);
-                        
+                 $numberBdd->setMother($user);
+                      
                  $manager->persist($roleAdded);
                  $manager->persist($numberBdd);
                  $manager->flush();
-
+                 
                  $this->addFlash(
                      'success',
                      "Compte lier, veuillez nommer le bracelet que vous venez de lier."
@@ -78,7 +76,7 @@ class WristletLinkController extends AbstractController
             }
             $numberBdd->getMother()->getEmail();
             
-                 /*vérification si l'utilisateur n'a pas déjà une demande en attente*/
+                // Vérify if the request exist and if the wristlet is not already link to a mother account
             if($requested == null && ($numberBdd->getMother() !== $user = $this->getUser())){
                
                     $requested = new Requested();
@@ -116,23 +114,26 @@ class WristletLinkController extends AbstractController
                     $this->addFlash("warning","Vous avez déjà fait une demande de liaison sur ce bracelet, veuillez attendre que la personne détentruce des droits valide la demande.");
                 
                 } 
-               
-                
-                
+       
         };
             
         return $this->render('account/link/link.html.twig',[
         'form' => $form->createView()]);
     }   
+
+
     /**
-     * Permet de nomer un bracelet lier par un compte mother
+     * Display the form where the user mother must named his wristlet
      *
      * @Route ("/account/link/namewristlet/{id}", name="mother_wristlet_named")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
+
     public function nameWristlet($id,SerialNumber $serials, ObjectManager $manager, Request $request){
+
         $form = $this->createForm(SerialNumberRenameType::class,$serials);
+        
         $repository = $this->getDoctrine()->getRepository(SerialNumber::class);
         $numberBdd = $repository->findOneByid($id);
                 

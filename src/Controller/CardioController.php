@@ -14,12 +14,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/*
+  Controller for the features for register and connected user
+
+  - list of all wristelet allowed at user account
+  - show the selected wristlet heart beat graph
+*/
 
 
 class CardioController extends AbstractController
 {
         /**
-        *Permet d'afficher les bracelets lier a ce compte
+        * Displays the list of all wristelet allowed at user account
         *
         * @Route("/account/cardio/cardiolist", name="account_cardio")
         * @Security("is_granted('ROLE_USER')")
@@ -32,7 +38,7 @@ class CardioController extends AbstractController
         }
 
         /** 
-         *Permet de voir les fréquences cardiaque d'un bracelet en particulier
+         * Allow to show the selected wristlet heart beat graph
          * 
          * @Route("/account/cardio/cardiowristlet/{id}", name="wristlet")
          * @Security("is_granted('ROLE_MOTHER') or is_granted('ROLE_CHILD')")
@@ -40,8 +46,7 @@ class CardioController extends AbstractController
          */
 
         public function show($id,SerialNumber $serial,SerialNumberRepository $repo){
-            //je recup l'annonce qui correspond au slug
-            
+            // TODO Graph in backend            
             $serial = $repo->findOneByid($id);
         
             return $this->render('account/cardio/cardio.html.twig',[

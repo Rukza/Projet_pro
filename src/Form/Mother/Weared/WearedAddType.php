@@ -14,6 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
+// Form to allow a mother account to add a wearer
+
+
 class WearedAddType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

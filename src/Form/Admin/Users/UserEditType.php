@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+// Form to allow admin to edit a user
+
 class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginoutController extends AbstractController
 {
     /**
-     * Permet l'affichage et le formulaire de connexion'
+     * Display the form to connect a registred user
      * 
      * @Route("/login", name="account_login")
      * 
@@ -30,7 +30,8 @@ class LoginoutController extends AbstractController
         
     }
     /**
-     * Permet gérer la déconnection 
+     * Allow a logged user to logout
+     * 
      * @Route("/logout", name="account_logout")
      *
      * @return void

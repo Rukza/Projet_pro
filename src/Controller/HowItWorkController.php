@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class HowItWorkController extends AbstractController
 {
     /**
+     * Display the page how work the wristlet
+     * 
      * @Route("/howitwork", name="how_it_work")
      */
     public function index()

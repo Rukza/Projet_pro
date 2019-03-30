@@ -14,6 +14,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/*
+  Controller for the features for register and connected user
+
+  - features for the account management
+  - form to edit the user account data
+  - form to modify the account password
+*/
 
 
 
@@ -21,11 +28,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AccountController extends AbstractController
 {
 
-    /**
-     *Permet d'afficher les fonctionnalitées reservé au profil inscrit
+     /**
+     * Displays the features for the account management
      *
      * @Route("/account/profile/logged", name="account_logged")
      * @IsGranted("ROLE_USER")
+     * 
      * @return Response
      */
 
@@ -35,7 +43,10 @@ class AccountController extends AbstractController
     }
     
     /**
-     *Permet d'afficher et de modifier les données du compte
+     * Display the form to edit the user account data : - email
+     *                                             - adress
+     *                                             - postal code
+     *                                             - city
      *
      * @Route("/account/profile/updateprofile", name="account_profile")
      * @IsGranted("ROLE_USER")
@@ -66,8 +77,10 @@ class AccountController extends AbstractController
         ]);
     }
     
-    /**
-     *Permet de modifier le mot de passe
+     /**
+     * Display the form to modify the account password
+     * 
+     * 
      * @IsGranted("ROLE_USER")
      * @Route("/account/profile/updatepswd", name="account_updatepswd")
      * 
@@ -84,6 +97,8 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
+            // vérify if the old password required in the form, was the actual password of the user
             if (!password_verify($passwordUpdate->getOldPassword(), $user->getPswd())){
 
                 $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel!"));

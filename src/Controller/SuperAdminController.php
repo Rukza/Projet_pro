@@ -26,14 +26,52 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
+/*
+  Controller for the features for Super Administrator (ROLE_ADMIN)
+
+  - display the dashboard admin
+
+  - display the table to see all users registred
+  - form to add a users
+  - form to edit selected user
+  - feature to delete selected user
+
+  - display the table to see all wristlet
+  - feature to create a new radom serial number
+  - form to edit selected wristlet
+  - feature to delete selected wristlet
+
+  - display the table to see all wearer
+  - form to add a wearer
+  - form to edit selected wearer
+  - feature to delete selected wearer
+
+  - display the table to see all request to an user to have acces to a wristlet of another user
+  - form to add a users
+  - form to edit selected user
+  - feature to delete selected user
+*/
+
+
+
+
+
+
+
+
+
 class SuperAdminController extends AbstractController
 {
     /**
+     * Display the dashboard admin
+     * 
      * @Route("/admin/index", name="super_admin")
      * @IsGranted("ROLE_ADMIN")
      */
     public function index(ObjectManager $manager)
     {
+        //DQL query to get stats count users,Wristlet,Request and wearer
         $users = $manager->createQuery('SELECT COUNT(u) FROM App\Entity\User u')->getSingleScalarResult();
         $serials = $manager->createQuery('SELECT COUNT(s) FROM App\Entity\SerialNumber s')->getSingleScalarResult();
         $requests = $manager->createQuery('SELECT COUNT(r) FROM App\Entity\Requested r')->getSingleScalarResult();
@@ -47,6 +85,7 @@ class SuperAdminController extends AbstractController
 
 
     /**
+    * Display the table to see all users registred
     * @Route("/admin/users/usermanagement", name="users_management")
     * @IsGranted("ROLE_ADMIN")
     * @return Response
@@ -58,7 +97,7 @@ class SuperAdminController extends AbstractController
         ]);
     }
     /**
-     * Permet d'ajouter un utilisateur
+     * form to add a users
      * 
      * @Route("/admin/users/add", name="admin_user_add")
      * @IsGranted("ROLE_ADMIN")
@@ -89,7 +128,7 @@ class SuperAdminController extends AbstractController
     }
     
      /**
-     * Permet de modifier un utilisateur
+     * Form to edit a user
      * 
      * @Route("/admin/users/{id}/edit", name="admin_user_edit")
      * @IsGranted("ROLE_ADMIN")
@@ -128,7 +167,7 @@ class SuperAdminController extends AbstractController
     }
 
      /**
-     * Permet de supprimer un utilisateur
+     * feature to delete selected user
      *
      * @Route ("/admin/users/usermanagement/{id}/delete", name="admin_user_delete")
      * @IsGranted("ROLE_ADMIN")
@@ -149,22 +188,26 @@ class SuperAdminController extends AbstractController
 
 
 
-    /**
-    * @Route("/admin/wristlets/wristletmanagement", name="wristlets_management")
-    * @IsGranted("ROLE_ADMIN")
-    * @return Response
-    */
+     /**
+     * Display the table to see all wristlet
+     * 
+     * @Route("/admin/wristlets/wristletmanagement", name="wristlets_management")
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
     public function serialsManagement(SerialNumberRepository $serialRepo){
         
         return $this->render('admin/wristlets/wristletmanagement.html.twig',[
             'wristlets' =>$serialRepo->findAll()
         ]);
     }
-
-    /**
-    * @Route("/admingen", name="GenSerial") 
-    * @IsGranted("ROLE_ADMIN")
-    */
+   
+     /**
+     * Feature to create a new radom serial number
+     * 
+     * @Route("/admingen", name="GenSerial") 
+     * @IsGranted("ROLE_ADMIN")
+     */
     //Generate cryptographied number to do in admin controller
 
     function serialRand(ObjectManager $manager, $longueur = 15, $listeCar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -188,17 +231,19 @@ class SuperAdminController extends AbstractController
                 "Un nouveau numéro de serie a bien été crée {$newNumber->getSerialWristlet()}");
             return $this->redirectToRoute('wristlets_management');
     }
-    /**
-     * Permet de modifier un bracelet
+    
+    
+     /**
+     * Form to edit selected wristlet
      *
      * @Route ("/admin/wristlets/{id}/edit", name="admin_wristlet_edit")
      * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function editWristlet(SerialNumber $serials, ObjectManager $manager, Request $request){
+
         $form = $this->createForm(SerialNumberEditType::class,$serials);
         
-
         $form->handleRequest($request);
 
         if($form->isSubmitted()&& $form->isValid()){
@@ -216,8 +261,8 @@ class SuperAdminController extends AbstractController
             ]);
     }
 
-    /**
-     * Permet de supprimer un bracelet
+     /**
+     * Feature to delete selected wristlet
      *
      * @Route ("/admin/wristlets/wristletmanagement/{id}/delete", name="admin_wristlet_delete")
      * @IsGranted("ROLE_ADMIN")
@@ -236,11 +281,14 @@ class SuperAdminController extends AbstractController
     }
 
 
-
-    /**
-    * @Route("/admin/weareds/wearedmanagement", name="weared_management")
-    * @IsGranted("ROLE_ADMIN")
-    * @return Response
+    
+    
+  
+     /**
+     * Display the table to see all wearer
+     * @Route("/admin/weareds/wearedmanagement", name="weared_management")
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
     */
     public function wearedManagement(WearedRepository $wearedRepo){
         
@@ -248,9 +296,9 @@ class SuperAdminController extends AbstractController
             'weareds' =>$wearedRepo->findAll()
         ]);
     }
-
+    
     /**
-     * Permet d'ajouter un porteur
+     * Form to add a wearer
      * 
      * @Route("/admin/weareds/add", name="admin_weared_add")
      * @IsGranted("ROLE_ADMIN")
@@ -278,9 +326,10 @@ class SuperAdminController extends AbstractController
                 'form' => $form->createView()
             ]);
     }
-    
+     
+       
      /**
-     * Permet de modifier un porteur
+     * Form to edit selected wearer
      * 
      * @Route("/admin/weareds/{id}/edit", name="admin_weared_edit")
      * @IsGranted("ROLE_ADMIN")
@@ -311,13 +360,14 @@ class SuperAdminController extends AbstractController
     }
 
      /**
-     * Permet de supprimer un porteur
+     * Feature to delete selected wearer
      *
      * @Route ("/admin/users/weareds/{id}/delete", name="admin_weared_delete")
      * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function deleteweared(Weared $wear, ObjectManager $manager){
+
             $mother = $wear->getWearWristlet();
             $mother->setAttributedTo(false);
             $manager->remove($wear);
@@ -331,12 +381,13 @@ class SuperAdminController extends AbstractController
             return $this->redirectToRoute('weared_management');
         }
 
-    
-      /**
-    * @Route("/admin/requests/requestwristletmanagement", name="requests_management")
-    * @IsGranted("ROLE_ADMIN")
-    * @return Response
-    */
+     /**
+     * Display the table to see all request to an user to have acces to a wristlet of another user
+     * 
+     * @Route("/admin/requests/requestwristletmanagement", name="requests_management")
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
     public function requetsManagement(RequestedRepository $requestsRepo){
         
         return $this->render('admin/requests/requestwristletmanagement.html.twig',[
@@ -344,8 +395,10 @@ class SuperAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * Permet d'ajouter un utilisateur
+
+   
+     /**
+     * Form to add a users
      * 
      * @Route("/admin/requests/add", name="admin_requests_add")
      * @IsGranted("ROLE_ADMIN")
@@ -372,9 +425,10 @@ class SuperAdminController extends AbstractController
                 'form' => $form->createView()
             ]);
     }
-    /**
-     * Permet de modifier une demande ou une laison enfant
-     *
+    
+     /**
+     * Form to edit selected user
+     * 
      * @Route ("/admin/requests/{id}/edit", name="admin_requests_edit")
      * @IsGranted("ROLE_ADMIN")
      * @return Response
@@ -400,13 +454,8 @@ class SuperAdminController extends AbstractController
             ]);
     }
 
-
-
-
-
-
-    /**
-     * Permet de supprimer une demande ou une liaison enfant
+     /**
+     * Feature to delete selected user
      *
      * @Route ("/admin/requests/requestwristletmanagement/{id}/delete", name="admin_requests_delete")
      * @return Response

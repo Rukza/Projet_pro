@@ -18,8 +18,8 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class RegistrationController extends AbstractController
 {
 
-  /**
-     * Permet d'afficher le formulaire d'insciption
+     /**
+     * Allow to show the form for registred an account
      * 
      * @Route("/register", name="account_register")
      *
@@ -60,6 +60,8 @@ class RegistrationController extends AbstractController
     }
 
      /**
+     * Set account to activate if the user have step the mail notification
+     * 
      * @Route("account/validate/{id}/{token}", name="validate")
      */
     public function resetting(User $user, $token, ObjectManager $manager,  Request $request)
@@ -69,7 +71,7 @@ class RegistrationController extends AbstractController
         {
             throw new AccessDeniedHttpException();
         }
-            // réinitialisation du token à null et passage du compte a vérifié
+            
             $user->setToken(null);
             $user->setActive(true);
            

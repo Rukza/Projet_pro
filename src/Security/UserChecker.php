@@ -4,6 +4,9 @@ use App\Entity\User as AppUser;
 use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+// Check if the user have activate is account
+
 class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user)
@@ -17,7 +20,7 @@ class UserChecker implements UserCheckerInterface
         if (!$user instanceof AppUser) {
             return;
         }
-        // user account is expired, the user may be notified
+        
         if (!$user->getActive()) {
             throw new \Exception("ce membre n'est pas actif");
         }

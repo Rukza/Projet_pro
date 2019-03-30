@@ -19,10 +19,28 @@ use App\Form\WristletLink\SerialNumberRenameType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/*
+  Controller for the features where user who have the ROLE_MOTHER can :
+
+  - display the user mother board and show stats of is wristlet
+
+  - form to modify the name of a selected wristlet
+
+  - show the list of weared wristlet of this user allow to manage
+  - form to add a wearer at wristlet user
+  - form to modify a wearer
+  - feature to allow delete selected wearer
+
+  - show the list of request the user have recive
+  - edit the selected request
+  - Allow to delete the selected request
+*/
+
+
 class MotherAdminController extends AbstractController
 {
     /**
-     *Permet d'afficher la page d'aministration d'un compte mother
+     * Allow to display the user mother board and show stats of is wristlet (TODO move it in a service)
      *
      * @Route("/account/mother/administration", name="wristlet_mother_adminitration")
      * @IsGranted("ROLE_MOTHER")
@@ -32,12 +50,13 @@ class MotherAdminController extends AbstractController
     public function adminWristlet(ObjectManager $manager)
     {
         $user = $this->getUser();
-        //stats des bracelets totals d'un compte mother
+
+        //DQL queris to count the number wristlet the user have
         $queryWristlets = $manager->createQuery('SELECT COUNT(s.attributedTo) FROM App\Entity\SerialNumber s WHERE s.Mother = :user');
         $queryWristlets->setParameter('user', $user);
         $numWristlets = $queryWristlets->getResult(Query::HYDRATE_SINGLE_SCALAR);
 
-        //stats des bracelets qui n'ont pas encore recus de porteur
+        //DQL queris to count the number wristlet who they have not a weared registred
         $queryWears  = $manager->createQueryBuilder();
         $queryWears ->select('COUNT(s.attributedTo)')
            ->from(SerialNumber::class, 's')
@@ -47,7 +66,7 @@ class MotherAdminController extends AbstractController
            ->setParameter('false', 0);
         $numWears = $queryWears->getQuery()->getSingleScalarResult();
 
-        //stats des bracelets qui n'ont pas eu de nom
+        //DQL queris to count the number wristlet who they have not named by the user
         $queryNotNamed  = $manager->createQueryBuilder();
         $queryNotNamed ->select('COUNT(s.attributedTo)')
            ->from(SerialNumber::class, 's')
@@ -57,12 +76,12 @@ class MotherAdminController extends AbstractController
            ->setParameter('NotNamed', "Undefine");
         $numNotNames = $queryNotNamed->getQuery()->getSingleScalarResult();
         
-        //stats des requetes pour tout les bracelets d'un compte mother
+        //DQL queris to count the number request wristlet user have recive
         $queryRequests = $manager->createQuery('SELECT COUNT(r.requestedFor) FROM App\Entity\Requested r WHERE r.requestedFor = :user');
         $queryRequests->setParameter('user', $user);
         $numRequests = $queryRequests->getResult(Query::HYDRATE_SINGLE_SCALAR);
  
-        //stas des requetes qui sont encore en attente
+        //DQL queris to count if the user have requetet in wait to validate
         $queryWaitingRequests  = $manager->createQueryBuilder();
         $queryWaitingRequests ->select('COUNT(r.requestedFor)')
            ->from(Requested::class, 'r')
@@ -84,7 +103,7 @@ class MotherAdminController extends AbstractController
     }
 
     /**
-     * Permet de modifier le nom d'un bracelet
+     * Form to modify the name of a selected wristlet
      * 
      * @Route ("/account/mother/{id}/edit", name="mother_Wristlet_Name_edit")
      * @IsGranted("ROLE_MOTHER")
@@ -112,7 +131,8 @@ class MotherAdminController extends AbstractController
     }
 
     /**
-     * Affiche la liste des bracelets du compte mother
+    * Show the list of weared wristlet of this user allow to manage
+    *
     * @Route("/account/mother/weared/wearedmanagement", name="mother_weared_management")
     * @IsGranted("ROLE_MOTHER")
     * @return Response
@@ -137,7 +157,7 @@ class MotherAdminController extends AbstractController
     }
 
     /**
-     * Permet d'ajouter un porteur de bracelet
+     * Form to add a wearer at wristlet user
      * 
      * @Route("/account/mother/weared/", name="mother_weared_add")
      * @IsGranted("ROLE_MOTHER")
@@ -146,7 +166,8 @@ class MotherAdminController extends AbstractController
 
     public function addWeared(Request $request, ObjectManager $manager){
         $weared = new Weared();
-        //envois de l'user au form pour avoir acces au nom de bracelet valide
+        
+        //Send the user at the form to have acces at named wristlet
         $form = $this->createForm(WearedAddType::class, $weared, [
         'user' => $user=$this->getUser()
         ]);
@@ -174,7 +195,7 @@ class MotherAdminController extends AbstractController
     }
 
     /**
-     * Permet de modifier un porteur de bracelet
+     * Form to modify a wearer
      * 
      * @Route ("/account/mother/weared/{id}/edit", name="mother_weared_edit")
      * @IsGranted("ROLE_MOTHER")
@@ -202,7 +223,7 @@ class MotherAdminController extends AbstractController
     }
 
     /**
-     * Permet de supprimer un porteur de bracelet
+     * Allow to delete the selected wearer 
      * 
      * @Route ("/account/mother/weared/{id}/delete", name="mother_weared_delete")
      * @IsGranted("ROLE_MOTHER")
@@ -225,8 +246,9 @@ class MotherAdminController extends AbstractController
 
 
 
-    /**
-    * Affiche la liste des demande de liaison des bracelets du compte mother
+    /** 
+    * Show the list of request the user have recive
+    *
     * @Route("/account/mother/linked/linkedmanagement", name="mother_linked_management")
     * @IsGranted("ROLE_MOTHER")
     * @return Response
@@ -253,7 +275,7 @@ class MotherAdminController extends AbstractController
 
 
     /**
-     * Permet de modifier l'état d'une demande
+     * Allow to edit the selected request
      *
      * @Route ("/account/mother/linked/{id}/edit", name="mother_linked_edit")
      * @IsGranted("ROLE_MOTHER")
@@ -318,8 +340,8 @@ class MotherAdminController extends AbstractController
 
 
     /**
-     * Permet de supprimer une liaison de bracelet
-     *
+     * Allow to delete the selected request
+     * 
      * @Route ("/account/mother/linked/{id}/delete", name="mother_linked_delete")
      * @IsGranted("ROLE_MOTHER")
      * @return Response

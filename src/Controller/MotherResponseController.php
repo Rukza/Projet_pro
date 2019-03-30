@@ -14,28 +14,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/*
+  Controller features for a user who they have ROLE_MOTHER 
+  to select what he want to do with the resquest who they have recive by mail notification :
+
+  - Refuse (user mother can use the form to send more detail at the resqueter user)
+  - Accept (allow to requester user to see heart beat from the wristlet managed by the mother account)
+  - Refuse and block (refuse and block the user resquester for this wristlet)
+*/
+
+
+
 class MotherResponseController extends AbstractController
 {
-    /**
-    *Vérification de l'intervale de temps entre un demande est la validation par mail
-    */
-    private function requestedInTime(\Datetime $RequestedAt = null)
-    {
-    if ($RequestedAt === null)
-    {
-        return false;        
-    }
     
-    $now = new \DateTime();
-    $interval = $now->getTimestamp() - $RequestedAt->getTimestamp();
-    $daySeconds = 60 * 10;//*24
-    $response = $interval > $daySeconds ? false : $reponse = true;
-    return $response;
-    }
-
-        /**
-     *Suite au mail reçus par le compte principale 
-     *Affichage du formulaire pour Accepter,Refuser,Bannir une demande de liaison
+     /**
+     * Display the features for a user who they have ROLE_MOTHER to select 
+     * what he want to do with the resquest who they have recive by mail notification
      *
      * @Route("account/motherresponse/{id}/{token}", name="mother_response")
      * 
@@ -44,8 +39,6 @@ class MotherResponseController extends AbstractController
     
     public function RequestMother(Request $request, $token,ObjectManager $manager,Mailer $motherResponse)
     {
-
-        // Récuperation de la bonne demande de liaison
         
         $requested = $this->getDoctrine()
         ->getRepository(Requested::class)
@@ -53,19 +46,12 @@ class MotherResponseController extends AbstractController
         
         $form = $this->createForm(RequestedType::class);
         $form->handleRequest($request);
-        //$requestedToken = $requested[0]->getRequestedToken();
+        
    
         
-        // interdit l'accès à la page si:
-        // le token associé au membre est null
-        // le token enregistré en base et le token présent dans l'url ne sont pas égaux
-        // le token date de plus de 10 minutes
-        /*if($requestedToken === null || $token !== $requestedToken || !$this->requestedInTime($requestedAt))
-        {
-        throw new AccessDeniedHttpException();
-        }else{*/
-
-            //Si le btn refuser est choisie
+        //TODO Allow or Deny request in time if they have pass the time accepted
+        //See if the requested token is valide
+       
             if($form->get('refuser')->isClicked() && $form->isValid())
             {
     
@@ -92,7 +78,7 @@ class MotherResponseController extends AbstractController
                 );
             
             }
-            //Si le btn accepter est choisie
+            
             if ($form->get('accepter')->isClicked() )
             {
                 $repositoryRole = $this->getDoctrine()->getRepository(Role::class);
@@ -100,12 +86,10 @@ class MotherResponseController extends AbstractController
                 
                 $user = $requested[0]->setRequestedAccepted(true);
                 $user = $requested[0]->getRequestedBy();
-                 $userSerial = $requested[0]->getRequestedFor();
-                //Mise en relation du role et du numéro de série a lier                
+                $userSerial = $requested[0]->getRequestedFor();
+                
                 $roleAdded->addUser($user);
-                    
-                    
-                                                
+                  
                 $manager->persist($roleAdded);
                 $manager->persist($user);
                 $manager->flush();
@@ -117,17 +101,13 @@ class MotherResponseController extends AbstractController
                 ); 
                 
                 $motherResponse->sendMessage('noreply@wristband.com', $user->getEmail(), 'Acceptation de la demande de liaison', $bodyMail);
-                        
-                //$manager->remove($requested[0]);
-                    
-            
+                
                 $this->addFlash(
                 'success',
                 "La demande de {$user->getEmail()} a bien été accepté, il pourra donc consulter les données du bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connecter vous à votre administration et supprimer ou bannisser la demande"
                 );
             }
         
-            //Si le btn bannir est choisie
             if ($form->get('bannir')->isClicked())
             {
                 $user = $requested[0]->getRequestedBy();

@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
+     * Display the home page
+     * 
      * @Route("/", name="homepage")
      */
     public function home()
@@ -18,6 +20,8 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Display the général mention page
+     * 
      * @Route("/generalmention", name="general_mention")
      */
     public function generaMention(){
