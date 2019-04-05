@@ -20,11 +20,19 @@
 
                 </div>
                 <div class="card-body">
+                    {% if stats.numWristlets | length > 0 %}
+                    
                     <h5>Nombres de vos braclets : {{stats.numWristlets}}</h5>
                     <hr>
+                    {% endif %}
+
+                    {% if stats.numWears | length > 0 %}
                     <h5>Nombres de vos bracelets pour lequel vous n'avez pas renseigné d'utilisateur :
                         {{stats.numWears}}</h5>
                     <hr>
+                    {% endif %}
+
+
                     <a href="{{path ('mother_weared_management')}}" class="btn btn-primary">Personnes portant vos
                         bracelets</a>
 
@@ -40,11 +48,19 @@
 
                 </div>
                 <div class="card-body">
+                    {% if stats.numRequests | length > 0 %}
                     <h5>Nombres de demande de liaison pour vos bracelets : {{stats.numRequests}}</h5>
                     <hr>
+                    {% endif %}
+
+
+                    {% if stats.numWaiting | length > 0 %}
                     <h5>Vous avez : {{stats.numWaiting}} demande de liaison en attente, pensez a consulter votre boite
                         mail</h5>
                     <hr>
+                    {% endif %}
+
+
 
                     <a href="{{path ('mother_linked_management')}}" class="btn btn-primary">Liaison de vos bracelets</a>
 
@@ -57,7 +73,8 @@
 {% if stats.numNotNames > 0 %}
 <div class="container-fluid">
     <div class="card bg-info mb-5 text-center text-white">
-        <h2>Attention vous disposer actuellement de {{stats.numNotNames}} bracelet nomé par default <strong>"Undefine"</strong>
+        <h2>Attention vous disposer actuellement de {{stats.numNotNames}} bracelet nomé par default
+            <strong>"Undefine"</strong>
         </h2>
         <p> il semblerait que lorsque vous avez rentré pour la première fois leur numéro de série vous aiyez oublier de
             leur donner un autre nom</p>
@@ -87,7 +104,8 @@
                 <td>{{SerialNumber.serialwristlet}}</td>
                 <td>{{SerialNumber.attributedTo|replace({ (1): "Oui" })}}</td>
                 <td>
-                    <a href="{{path ('mother_Wristlet_Name_edit', {'id':SerialNumber.id})}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href="{{path ('mother_Wristlet_Name_edit', {'id':SerialNumber.id})}}" class="btn btn-primary"><i
+                            class="fas fa-edit"></i></a>
                 </td>
             </tr>
             {% endfor %}

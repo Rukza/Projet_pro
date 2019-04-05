@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
         $manager->persist($motherRole);
 
         $childrenRole = new Role();
-        $childrenRole->setTitle('CHILD');
+        $childrenRole->setTitle('ROLE_CHILD');
         $manager->persist($childrenRole);
 
         $adminUser = new User();
@@ -111,26 +111,24 @@ class AppFixtures extends Fixture
 
 
 
-        //Craft of a random serial number
-       
-
+        
+        
+            $newNumbers = [];
             $longueur = 8;
             $listeCar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $chaine = '';
             $max = mb_strlen($listeCar, '8bit') - 1;
-            for ($i = 0; $i < $longueur; ++$i) {
-            $chaine .= $listeCar[random_int(0, $max)];
-            }
-            
-            $newNumbers = [];
 
         for($i = 1;$i <= 25; $i++){
-            $newNumber = new SerialNumber;
-                
+              
             $user = $users[mt_rand(0,count($users)-1)];
             $weared = $wearers[mt_rand(0,count($wearers)-1)];
+             $chaine = '';
+                
+                for ($j = 0; $j < $longueur; ++$j) {
+                $chaine .= $listeCar[random_int(0, $max)];
+                }
 
-            
+            $newNumber = new SerialNumber;
             $newNumber->setSerialWristlet($chaine)
                       ->setWristletTitle($faker->lastname)
                       ->setActiveSerial(1)
@@ -164,25 +162,20 @@ class AppFixtures extends Fixture
                                         $requested->setRequestedRefused(1)
                                                   ->setRequestedAt(new \Datetime())
                                                   ->setRequestedToken($token);
-
-
-                                    }
-                                    
+                                    }                                   
                                 }
-            
+                                 $user->addUserRole($childrenRole);  
                                 
                     $manager->persist($requested);
                     }
 
                     // Dell all wearer who have not a wear
 
-                    
-
-                    foreach($wearers as $value){
+                    foreach($wearers as $wearer){
                         
                         if($wearer->getWearWristlet() == null){
                             
-                            $manager-remove($wearer);
+                            $manager->remove($wearer);
                         }
                     }
 
