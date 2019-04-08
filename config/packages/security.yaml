@@ -26,6 +26,8 @@ security:
                 login_path: account_login
                 check_path: account_login  
                 csrf_token_generator: security.csrf.token_manager
+                default_target_path: account_logged
+                failure_path: account_login
 
             logout:
                 path: account_logout
