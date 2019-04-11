@@ -20,12 +20,13 @@ class LoginoutController extends AbstractController
      */
     public function login(AuthenticationUtils $utils)
     {
-        $error = $utils->getLastAuthenticationError();
-        $username = $utils->getLastUsername();
+        
 
-        if (true === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
-            return $this->redirectToRoute('super_admin');
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('super_admin');}
+
+            $error = $utils->getLastAuthenticationError();
+            $username = $utils->getLastUsername();
 
         return $this->render('account/login.html.twig', [
                 'hasError' => $error !== null,
