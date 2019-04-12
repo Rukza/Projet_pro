@@ -41,7 +41,7 @@ class ResettingController extends Controller
                         $user = $em->getRepository(User::class)->findOneByEmail($form->getData()['email']);
 
                         if (!$user){
-                            $request->getSession()->getFlashBag()->add('Warning', "Une erreur est survenu veuillez réitérer l'opération");
+                            $request->getSession()->getFlashBag()->add('Warning', "Une erreur est survenue veuillez réitérer l'opération");
                             return $this->redirectToRoute("requete_reset");
                         }
                         $user->setToken($tokenGenerator->generateToken());
@@ -52,7 +52,7 @@ class ResettingController extends Controller
                             'user' => $user
                             ]);
                             $mailer->sendMessage('noreply@wristband.com', $user->getEmail(), 'renouvellement du mot de passe', $bodyMail);
-                            $request->getSession()->getFlashBag()->add('success', "Si vous été inscrit sur notre site, un email va vous être envoyé afin que vous puissiez renouveller votre mot de passe. Le lien ne sera valide que 24h!!!");
+                            $request->getSession()->getFlashBag()->add('success', "Si vous êtes inscrit sur notre site, un email va vous être envoyé afin que vous puissiez renouveller votre mot de passe. Le lien ne sera valide que 24h!!!");
 
                             return $this->redirectToRoute("account_login");
                     }

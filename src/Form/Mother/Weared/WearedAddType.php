@@ -37,10 +37,10 @@ class WearedAddType extends ApplicationType
                     ->where('s.Mother = :user','s.attributedTo = 0');
             },
             'choice_label' => 'wristletTitle',
-            'label' => 'choisissez le nom du bracelet que vous souhaitez attribuer a la personne.',
+            'label' => 'Choisissez le nom du bracelet que vous souhaitez attribuer à la personne.',
             'placeholder' => 'Choisissez un nom',
         ])
-        ->add('checkRgpd',CheckboxType::class,$this->getConfiguration(" je certifie diposer des droits de traitement des données relatives à la personne concernée.", " ", array()));
+        ->add('checkRgpd',CheckboxType::class,$this->getConfiguration(" je certifie disposer des droits de traitement des données relatives à la personne concernée.", " ", array()));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -121,7 +121,7 @@ class MotherAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "Le bracelet {$requested->getwristletTitle()} a bien été modfiée !"
+                    "Le bracelet {$requested->getwristletTitle()} a bien été modifié !"
                 );
             }
             return $this->render('/account/mother/edit.html.twig',[
@@ -185,7 +185,7 @@ class MotherAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "L'utilisateur {$weared->getFullName()} a bien été ajouté et lier au bracelet {$weared->getWearWristlet()}"
+                    "L'utilisateur {$weared->getFullName()} a bien été ajouté et lié au bracelet {$weared->getWearWristlet()}"
                 );
         }
             return $this->render('/account/mother/weared/add.html.twig',[
@@ -213,7 +213,7 @@ class MotherAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "Le porteur {$weared->getFullName()} de {$weared->getWearWristlet()} a bien été modfiée !"
+                    "Le porteur {$weared->getFullName()} de {$weared->getWearWristlet()} a bien été modifié !"
                 );
             }
             return $this->render('/account/mother/weared/edit.html.twig',[
@@ -237,7 +237,7 @@ class MotherAdminController extends AbstractController
         
         $this->addflash(
             'success',
-            "Le porteur a bien été supprimée !"
+            "Le porteur a bien été supprimé !"
             
         );
         return $this->redirectToRoute('mother_weared_management');
@@ -296,7 +296,7 @@ class MotherAdminController extends AbstractController
 
              $this->addFlash(
             'success',
-            "La demande a bien été modifié, vous l'avez passé a refusée"
+            "La demande a bien été modifiée, vous l'avez passé à refuser"
             );
         
         }
@@ -311,7 +311,7 @@ class MotherAdminController extends AbstractController
 
              $this->addFlash(
             'success',
-            "La demande a bien été modifié, vous l'avez passé a accepté"
+            "La demande a bien été modifiée, vous l'avez passé à accepter"
             );
         
         }
@@ -326,7 +326,7 @@ class MotherAdminController extends AbstractController
 
              $this->addFlash(
             'success',
-            "La demande a bien été modifié, vous l'avez passé a bloqué"
+            "La demande a bien été modifiée, vous l'avez passé à bloquer"
             );
         
         }

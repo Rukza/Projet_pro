@@ -118,7 +118,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "l'utilisateur {$user->getFullName()} a bien ajouté !"
+                    "l'utilisateur {$user->getFullName()} a bien été ajouté !"
                 );
             }
             return $this->render('admin/users/add.html.twig',[
@@ -179,7 +179,7 @@ class SuperAdminController extends AbstractController
             
             $this->addflash(
                 'success',
-                "L'utilisateur a bien été supprimée !"
+                "L'utilisateur a bien été supprimé !"
                 
             );
             return $this->redirectToRoute('users_management');
@@ -228,7 +228,7 @@ class SuperAdminController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                "Un nouveau numéro de serie a bien été crée {$newNumber->getSerialWristlet()}");
+                "Un nouveau numéro de série a bien été créé {$newNumber->getSerialWristlet()}");
             return $this->redirectToRoute('wristlets_management');
     }
     
@@ -274,7 +274,7 @@ class SuperAdminController extends AbstractController
         
         $this->addflash(
             'success',
-            "Le bracelet a bien été supprimée !"
+            "Le bracelet a bien été supprimé !"
             
         );
         return $this->redirectToRoute('wristlets_management');
@@ -318,7 +318,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le porteur de bracelet {$wearer->getFullName()} a bien ajouté !"
+                    "le porteur de bracelet {$wearer->getFullName()} a bien été ajouté !"
                 );
             }
             return $this->render('admin/weareds/add.html.twig',[
@@ -375,7 +375,7 @@ class SuperAdminController extends AbstractController
             
             $this->addflash(
                 'success',
-                "Le porteur de bracelet a bien été supprimée !"
+                "Le porteur de bracelet a bien été supprimé !"
                 
             );
             return $this->redirectToRoute('weared_management');
@@ -417,7 +417,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "La demande de {$requested->getRequestedBy()->getFullName()} pour {$requested->getRequestedFor()} a bien été ajouté !"
+                    "La demande de {$requested->getRequestedBy()->getFullName()} pour {$requested->getRequestedFor()} a bien été ajoutée !"
                 );
             }
             return $this->render('admin/requests/add.html.twig',[
@@ -445,7 +445,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "La demande de {$requested->getRequestedBy()->getFullName()} pour {$requested->getRequestedFor()} a bien été modfiée !"
+                    "La demande de {$requested->getRequestedBy()->getFullName()} pour {$requested->getRequestedFor()} a bien été modifiée !"
                 );
             }
             return $this->render('admin/requests/edit.html.twig',[

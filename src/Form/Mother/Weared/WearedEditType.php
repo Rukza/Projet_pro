@@ -24,7 +24,7 @@ class WearedEditType extends ApplicationType
         ->add('firstName',TextType::class,$this->getConfiguration("Prénom", "Veuillez renseigner le prénom du porteur"))
         ->add('lastName',TextType::class,$this->getConfiguration("Nom", "Veuillez renseigner le nom du porteur"))
         ->add('adress',TextType::class,$this->getConfiguration("Adresse", "Veuillez renseigner l'adresse du porteur"))
-        ->add('postalCode',TextType::class,$this->getConfiguration("Code postal", "Veuillez renseigner lcode postal du porteur"))
+        ->add('postalCode',TextType::class,$this->getConfiguration("Code postal", "Veuillez renseigner le code postal du porteur"))
         ->add('city',TextType::class,$this->getConfiguration("Ville", "Veuillez renseigner la ville du porteur"))
         ;
     }

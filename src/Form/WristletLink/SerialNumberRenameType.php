@@ -16,7 +16,7 @@ class SerialNumberRenameType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('wristletTitle', TextType::class, $this->getConfiguration("Nom du bracelet précédemment lier", "Veuillez donner un nom au bracelet"))
+            ->add('wristletTitle', TextType::class, $this->getConfiguration("Nom du bracelet précédemment lié", "Veuillez donner un nom au bracelet"))
         ;
     }
 

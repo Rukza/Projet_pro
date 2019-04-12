@@ -47,7 +47,7 @@ class RegistrationController extends AbstractController
             $mailer->sendMessage('noreply@wristband.com', $user->getEmail(), 'Validation du compte', $bodyMail);
         $this->addFlash(
             'success',
-            "votre compte a bien été crée! Un email vas vous être envoyé afin de confirmer votre compte"
+            "Votre compte a bien été créé! Un email va vous être envoyé afin de confirmer votre compte"
 
             
         );
