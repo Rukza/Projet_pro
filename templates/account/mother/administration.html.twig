@@ -6,9 +6,9 @@
     <div class="card bg-light mb-5 text-center">
         <h1>Administration du compte {{user.Email}}</h1>
         <p>Bienvenue {{user.fullName}} sur votre section administration</p>
-        <p>ici vous pourrez gérer vos bracelets,
-            que se soit les personnes qui les portents, <br>
-            ou les personnes qui demandent a y avoir accès</p>
+        <p>Ici vous pourrez gérer vos bracelets,
+            que se soit les personnes qui les portent, <br>
+            ou les personnes qui demandent à y avoir accès</p>
     </div>
     <div class="row">
 
@@ -22,12 +22,12 @@
                 <div class="card-body">
                     {% if stats.numWristlets | length > 0 %}
                     
-                    <h5>Nombres de vos braclets : {{stats.numWristlets}}</h5>
+                    <h5>Nombre de vos braclets : {{stats.numWristlets}}</h5>
                     <hr>
                     {% endif %}
 
                     {% if stats.numWears | length > 0 %}
-                    <h5>Nombres de vos bracelets pour lequel vous n'avez pas renseigné d'utilisateur :
+                    <h5>Nombre de vos bracelets pour lequel vous n'avez pas renseigné d'utilisateur :
                         {{stats.numWears}}</h5>
                     <hr>
                     {% endif %}
@@ -55,7 +55,7 @@
 
 
                     {% if stats.numWaiting | length > 0 %}
-                    <h5>Vous avez : {{stats.numWaiting}} demande de liaison en attente, pensez a consulter votre boite
+                    <h5>Vous avez : {{stats.numWaiting}} demande de liaison en attente, pensez à consulter votre boite
                         mail</h5>
                     <hr>
                     {% endif %}
@@ -73,12 +73,12 @@
 {% if stats.numNotNames > 0 %}
 <div class="container-fluid">
     <div class="card bg-info mb-5 text-center text-white">
-        <h2>Attention vous disposer actuellement de {{stats.numNotNames}} bracelet nomé par default
+        <h2>Attention vous disposez actuellement de {{stats.numNotNames}} bracelet nomé par défault
             <strong>"Undefine"</strong>
         </h2>
-        <p> il semblerait que lorsque vous avez rentré pour la première fois leur numéro de série vous aiyez oublier de
+        <p> Il semblerait que lorsque vous avez rentré pour la première fois leur numéro de série vous ayez oublié de
             leur donner un autre nom</p>
-        <p>merci de prendre le temps de les renomées!</p>
+        <p>mMrci de prendre le temps de les renommer!</p>
     </div>
 </div>
 {% endif %}

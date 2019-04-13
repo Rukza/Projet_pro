@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(
  * fields={"email"},
- * message="Adresse mail incompatible veuillez en rentrer une autre"
+ * message="Adresse mail incompatible, veuillez en rentrer une autre"
  * )
  */
 class User implements UserInterface 
@@ -65,7 +65,7 @@ class User implements UserInterface
      */
     private $pswd;
     /**
-     * @Assert\EqualTo(propertyPath="pswd", message="Vos mots de passes ne sont pas identiques")
+     * @Assert\EqualTo(propertyPath="pswd", message="Vos mots de passe ne sont pas identiques")
      *
      * 
      */
@@ -212,7 +212,6 @@ class User implements UserInterface
         return $this;
     }
 
-    //Mise en place d'une fonction pour avoir le nom complet et simplifier le code
     public function getFullName(){
     return "{$this->firstName} {$this->lastName}";
     }
@@ -242,12 +241,12 @@ class User implements UserInterface
         return $this;
     }
    
-    public function getRoles()//renvois la liste des roles sous chaine de caractère
+    public function getRoles()//return roles list in string
     {
        $roles = $this->userRoles->map(function($role){
-           //map boucle sur tout les elements du array collection et renvois en tbl avec les elements transformes
+           
            return $role->getTitle();
-           //au final la fonction map ne retiendra que le titre du role et non le reste du tbl
+          
        })->toArray();
        $roles[] = 'ROLE_USER';
       

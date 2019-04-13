@@ -2,7 +2,7 @@
 {% block body %}
 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
     <div style="font-family:helvetica;font-size:20px;line-height:1;text-align:left;color:#F45E43;">
-        Sujet : Demande de liaison avec un bracelet dont vous étes le référent</div>
+        Sujet : Demande de liaison avec un bracelet dont vous êtes le référent</div>
 </td>
 </tr>
 <tr>
@@ -13,7 +13,7 @@
                 de <strong>{{user.email}}</strong>, pour lier son compte avec le bracelet <strong>{{serialNumber.wristletTitle}}</strong>.
             
                 <a
-                    href="{{absolute_url(path('mother_response', {'id':requested.id, 'token': requested.requestedToken}))}}">cliquer ici pour repondre a cette demande</a>
+                    href="{{absolute_url(path('mother_response', {'id':requested.id, 'token': requested.requestedToken}))}}">Cliquer ici pour répondre à cette demande</a>
             </p>
 
 

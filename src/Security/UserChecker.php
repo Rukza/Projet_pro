@@ -22,7 +22,7 @@ class UserChecker implements UserCheckerInterface
         }
         
         if (!$user->getActive()) {
-            throw new \Exception("ce membre n'est pas actif");
+            throw new \Exception("Ce membre n'est pas actif");
         }
     }
 }

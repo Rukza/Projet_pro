@@ -14,7 +14,7 @@
     </div>
     <div class="card-body text-center">
      {% if is_granted('ROLE_MOTHER')%}
-        <a href="{{ path('wristlet_mother_adminitration')}}" class="btn btn-info"><i class="fas fa-tools"> Administrer vos bracelet</i></a>
+        <a href="{{ path('wristlet_mother_adminitration')}}" class="btn btn-info"><i class="fas fa-tools"> Administrer vos bracelets</i></a>
         {% endif %}
         <br>
         <br>
@@ -27,10 +27,10 @@
                     <h4>Modifier les données du compte</h4>
                 </div>
                 <div class="card-body">
-                    <a href="{{ path('account_profile') }}">Modfier votre Email/Adresse postale</a>
+                    <a href="{{ path('account_profile') }}">Modifier votre Email/Adresse postale</a>
                     <br>
                     
-                    <a href="{{ path('account_updatepswd') }}">Modfier votre mot de passe</a>
+                    <a href="{{ path('account_updatepswd') }}">Modifier votre mot de passe</a>
                     <br>
 
                 </div>
@@ -40,13 +40,13 @@
         <div class="col">
             <div class="card bg-light mb-5 text-center">
                 <div class="card-header">
-                        <h4>Acceder au fonction du bracelet</h4>
+                        <h4>Accéder au fonction du bracelet</h4>
                     </div>
                     <div class="card-body">
-                        <a href="{{ path('account_link') }}">Ajouter un bracelet a se compte</a>
+                        <a href="{{ path('account_link') }}">Ajouter un bracelet à ce compte</a>
                         <br>
                       
-                        <a href="{{ path('account_cardio') }}">Consulter les données des bracelets lier au compte</a>
+                        <a href="{{ path('account_cardio') }}">Consulter les données des bracelets liés au compte</a>
                         <br>
                     </div>
             </div>

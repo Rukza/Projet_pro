@@ -74,7 +74,7 @@ class MotherResponseController extends AbstractController
                     
                 $this->addFlash(
                 'success',
-                "La demande de {$user->getEmail()} a bien été refusée, il pourra cependant vous refaire une demande pour le bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connecter vous à votre administration et accepter ou bannisser la demande"
+                "La demande de {$user->getEmail()} a bien été refusée, il pourra cependant vous refaire une demande pour le bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connectez-vous à votre administration et acceptez ou bloquez la demande"
                 );
             
             }
@@ -104,7 +104,7 @@ class MotherResponseController extends AbstractController
                 
                 $this->addFlash(
                 'success',
-                "La demande de {$user->getEmail()} a bien été acceptée, il pourra donc consulter les données du bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez à changer d'avis, connecter vous à votre administration et supprimer ou bannisser la demande"
+                "La demande de {$user->getEmail()} a bien été acceptée, il pourra donc consulter les données du bracelet {$userSerial->getWristletTitle()}. Si toutefois vous veniez à changer d'avis, connectez vous à votre administration et supprimez ou bloquez la demande"
                 );
             }
         
@@ -120,7 +120,7 @@ class MotherResponseController extends AbstractController
                 
                 $this->addFlash(
                     'success',
-                    "La demande de {$user->getEmail()} a bien été refusée et il ne pourra plus vous faire de demande pour le bracelet {$userSerial->getWristletTitle()}. Si toute fois vous veniez a changer d'avis vous pourrez supprimer cela en vous connectant a votre page d'administration de bracelet"
+                    "La demande de {$user->getEmail()} a bien été refusée et il ne pourra plus vous faire de demande pour le bracelet {$userSerial->getWristletTitle()}. Si toutefois vous veniez à changer d'avis vous pourrez supprimer cela en vous connectant a votre page d'administration de bracelet"
                 );
         
                 $bodyMail = $motherResponse->createBodyMail('emails/motherban.html.twig', [

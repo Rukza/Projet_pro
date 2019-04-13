@@ -148,7 +148,7 @@ class WristletLinkController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le bracelet a bien été nomé, afin que les modifications soit prise en compte veuillez vous déconnecter et vous connecter à nouveau."
+                    "Le bracelet a bien été nomé, afin que les modifications soient prises en compte veuillez vous déconnecter et vous connecter à nouveau."
                 );
             }
         }else{
