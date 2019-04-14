@@ -106,7 +106,7 @@ class WristletLinkController extends AbstractController
                     Vous devez attendre la confirmation de la personne détentrice du compte principal.");  
                       
                 }else if($numberBdd->getMother() == $user = $this->getUser()){
-                    $this->addFlash("warning","Vous ne pouvez refaire une demande sur ce bracelet car vous avez déjà lié à ce compte.");
+                    $this->addFlash("warning","Vous ne pouvez refaire une demande sur ce bracelet car vous l'avez déjà lié à ce compte.");
                    
                 }else if($requested[0]->getRequestedBanned() === true){
                     $this->addFlash("warning","Vous ne pouvez pas faire une demande pour ce bracelet, votre compte a été bloqué par la personne détentrice des droits de ce bracelet.");     
@@ -148,8 +148,9 @@ class WristletLinkController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "Le bracelet a bien été nomé, afin que les modifications soient prises en compte veuillez vous déconnecter et vous connecter à nouveau."
+                    "Le bracelet a bien été nommé, afin que les modifications soient prises en compte veuillez vous déconnecter et vous connecter à nouveau."
                 );
+                return $this->redirectToRoute('account_logged');
             }
         }else{
             $this->addFlash(

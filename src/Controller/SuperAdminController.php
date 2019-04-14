@@ -118,7 +118,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "l'utilisateur {$user->getFullName()} a bien été ajouté !"
+                    "L'utilisateur {$user->getFullName()} a bien été ajouté !"
                 );
             }
             return $this->render('admin/users/add.html.twig',[
@@ -157,7 +157,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "l'utilisateur {$user->getFullName()} a bien été modifié !"
+                    "L'utilisateur {$user->getFullName()} a bien été modifié !"
                 );
             }
             return $this->render('admin/users/edit.html.twig',[
@@ -252,7 +252,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le bracelet a bien été modifié !"
+                    "Le bracelet a bien été modifié !"
                 );
             }
             return $this->render('admin/wristlets/edit.html.twig',[
@@ -318,7 +318,7 @@ class SuperAdminController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    "le porteur de bracelet {$wearer->getFullName()} a bien été ajouté !"
+                    "Le porteur de bracelet {$wearer->getFullName()} a bien été ajouté !"
                 );
             }
             return $this->render('admin/weareds/add.html.twig',[

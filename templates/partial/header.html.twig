@@ -13,7 +13,7 @@
         <a class="nav-link" href=" {{ path('how_it_work')}} ">Fonctionnement du bracelet</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ path('contact')}}">Contactez nous</a>
+        <a class="nav-link" href="{{ path('contact')}}">Contactez-nous</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
@@ -34,10 +34,10 @@
               <hr>
               {% if is_granted('ROLE_MOTHER')%}
               <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter
-                les données cardiaque </a>
+                les données cardiaques </a>
               {% elseif is_granted('ROLE_CHILD')%}
               <a href="{{ path('account_cardio') }}" class="dropdown-item"><i class="fas fa-heartbeat"></i> Consulter
-                les données cardiaque </a>
+                les données cardiaques </a>
               {% endif %}
 
               <hr>

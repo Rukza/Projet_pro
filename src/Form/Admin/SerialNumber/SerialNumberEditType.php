@@ -17,7 +17,7 @@ class SerialNumberEditType extends ApplicationType
         $builder
             ->add('serialWristlet')
             ->add('wristletTitle')
-            ->add('active')
+            ->add('activeSerial')
             ->add('Mother')
         ;
     }

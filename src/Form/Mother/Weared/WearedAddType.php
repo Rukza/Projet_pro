@@ -48,5 +48,7 @@ class WearedAddType extends ApplicationType
         
             $resolver->setRequired(['user'])
           ;
+          $resolver->setDefaults([
+            'csrf_protection' => false,]);
     }
 }
