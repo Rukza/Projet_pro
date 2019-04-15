@@ -22,7 +22,11 @@ class UserAddType extends ApplicationType
             ->add('lastName',TextType::class,$this->getConfiguration("Nom", "Veuillez renseigner votre nom"))
             ->add('email',EmailType::class,$this->getConfiguration("Email", "Veuillez renseigner votre email"))
             ->add('pswd',PasswordType::class,$this->getConfiguration("Mot de passe", "Veuillez renseigner votre mot de passe"))
-        ;
+            ->add('adress',TextType::class,$this->getConfiguration("Adresse", "Veuillez renseigner votre adresse"))
+            ->add('postalCode',TextType::class,$this->getConfiguration("Code postal", "Veuillez renseigner votre code postal"))
+            ->add('city',TextType::class,$this->getConfiguration("Ville", "Veuillez renseigner votre ville"))
+
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
